@@ -1,5 +1,4 @@
 import React from 'react';
-import token from '../accessToken.js';
 
 const Login = (props) => {
   return (
