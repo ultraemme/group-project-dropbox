@@ -11,6 +11,14 @@ function getSomething() {
     console.log(JSON.parse(res));
   })
 }
+function newFile (){
+  let dbx = new Dropbox({accessToken: token$.value, fetch});
+  console.log('dbx', dbx); //list methods
+  dbx.filesCreateFolder({path: 'snus'})
+  .then(res => {
+    console.log(JSON.parse(res));
+  })
+}
 
 const Home = (props) => {
 
@@ -34,6 +42,7 @@ const Home = (props) => {
     <>
       <p>Home</p>
       <button onClick={getSomething}>Get something</button>
+      <button onClick={newFile}>new file</button>
     </>
   )
 }
