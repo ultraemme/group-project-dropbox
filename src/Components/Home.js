@@ -14,11 +14,38 @@ function getSomething() {
 function newFile (){
   let dbx = new Dropbox({accessToken: token$.value, fetch});
   console.log('dbx', dbx); //list methods
-  dbx.filesCreateFolder({path: 'snus'})
+  dbx.filesCreateFolder({path: '/fisken gädda'})
   .then(res => {
     console.log(JSON.parse(res));
   })
 }
+function moveFile(){
+  let dbx = new Dropbox({accessToken: token$.value, fetch});
+  console.log('dbx', dbx); //list methods
+  dbx.filesMoveV2({
+    from_path:"/jonas/jonas.jpg",
+    to_path:"/test/jonas.jpg",
+    autorename:true,
+  })
+}
+function deleteFile(){
+  let dbx = new Dropbox({accessToken: token$.value, fetch});
+  console.log('dbx', dbx); //list methods
+  dbx.filesDeleteV2({path: '/fisken gädda'})
+  .then(res => {
+    console.log(JSON.parse(res));
+  })
+}
+function downdloadFile (){
+  let dbx = new Dropbox({accessToken: token$.value, fetch});
+  console.log('dbx', dbx); //list methods
+  dbx.filesDownload({path:'/test/jonas.jpg'})
+  .then(res => {
+    console.log((res));
+  })
+}
+
+
 
 const Home = (props) => {
 
@@ -42,7 +69,10 @@ const Home = (props) => {
     <>
       <p>Home</p>
       <button onClick={getSomething}>Get something</button>
-      <button onClick={newFile}>new file</button>
+      <button onClick={newFile}>New file</button>
+      <button onClick={moveFile}>Move file</button>
+      <button onClick={deleteFile}>Delete file</button>
+      <button onClick={downdloadFile}>Download</button>
     </>
   )
 }
