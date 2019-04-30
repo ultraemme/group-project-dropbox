@@ -11,10 +11,11 @@ function getSomething() {
     console.log(JSON.parse(res));
   })
 }
+
 function newFile (){
   let dbx = new Dropbox({accessToken: token$.value, fetch});
   console.log('dbx', dbx); //list methods
-  dbx.filesCreateFolder({path: 'snus'})
+  dbx.filesCreateFolder({path: 'snus'}) //deprecated, refer to filesCreateFolderV2(arg)
   .then(res => {
     console.log(JSON.parse(res));
   })
