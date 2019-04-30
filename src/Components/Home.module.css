@@ -1,0 +1,14 @@
+.home{
+  display: flex;
+}
+.home__left-container{
+  width: 20%;
+  height: 100vh;
+  z-index: 51;
+}
+.home__right-container{
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  z-index: 50;
+}
