@@ -54,11 +54,13 @@ function downdloadFile() {
 
 
 
-let dbx;
+// let dbx;
 
 const Home = (props) => {
+  console.log("HEJ", props.location);
+
+  const currentPath = props.location.pathname.substr(5);
   const [newFolder, setNewFolder] = useState(false);
-  const [currentPath, setCurrentPath] = useState("");
   const [currentFolder, setCurrentFolder] = useState({});
   const [redirectLogout, setRedirectLogout] = useState(false);
   const [didMount, setDidMount] = useState(false);
@@ -66,13 +68,6 @@ const Home = (props) => {
   function signOut () {
     setRedirectLogout(true);
     updateToken(null);
-  }
-
-  function setPath (path) {
-    console.log(path);
-    let newPath = currentPath + path;
-    setCurrentPath(newPath);
-    console.log('state path', currentPath);
   }
 
   function formatPath () {
@@ -102,7 +97,7 @@ const Home = (props) => {
 
   useEffect(() => {
     if(didMount){
-      dbx = new Dropbox({accessToken: token$.value, fetch});
+      const dbx = new Dropbox({accessToken: token$.value, fetch});
       dbx.filesListFolder({path: currentPath})
       .then(res => {
         console.log(res);
@@ -112,8 +107,9 @@ const Home = (props) => {
   }, [didMount]);
 
   useEffect(() => {
+    console.log("test", currentPath);
     if (didMount) {
-      dbx = new Dropbox({accessToken: token$.value, fetch});
+      const dbx = new Dropbox({accessToken: token$.value, fetch});
       dbx.filesListFolder({path: currentPath})
         .then(res => {
           setCurrentFolder(res);
@@ -129,8 +125,8 @@ const Home = (props) => {
               <Navigation newFile={() => setNewFolder(true)} signOut={signOut}/>
             </div>
             <div className={styles['home__right-container']}>
-              <Header/>
-              <Content setPath={setPath} currentFolder={currentFolder}/>
+              <Header currentPath={currentPath}/>
+              <Content currentFolder={currentFolder} currentPath={currentPath}/>
             </div>
           </div>
       }

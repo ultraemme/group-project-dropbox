@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Content.module.css';
+import { Link } from 'react-router-dom';
 
 const Content = (props) => {
   console.log(props.currentFolder.entries);
@@ -25,7 +26,7 @@ const Content = (props) => {
                 <tr key={file.id}>
                   <td>*</td>
                   <td>{file[".tag"]}</td>
-                  <td onClick={(e) => props.setPath(file.path_lower)}>{file.name}</td>
+                  <td><Link to={`/home${file.path_lower}`}>{file.name}</Link></td>
                   <td>Last modified</td>
                   <td>Size</td>
                   <td>V</td>
