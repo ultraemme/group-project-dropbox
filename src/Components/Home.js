@@ -125,7 +125,7 @@ const Home = (props) => {
               <Navigation newFile={() => setNewFolder(true)} signOut={signOut}/>
             </div>
             <div className={styles['home__right-container']}>
-              <Header currentPath={currentPath}/>
+              <Header currentPath={props.location}/>
               <Content currentFolder={currentFolder} currentPath={currentPath}/>
             </div>
           </div>

@@ -26,7 +26,7 @@ const Content = (props) => {
                 <tr key={file.id}>
                   <td>*</td>
                   <td>{file[".tag"]}</td>
-                  <td><Link to={`/home${file.path_lower}`}>{file.name}</Link></td>
+                  <td><Link to={`/home${file.path_display}`}>{file.name}</Link></td>
                   <td>Last modified</td>
                   <td>Size</td>
                   <td>V</td>

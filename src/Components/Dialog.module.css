@@ -8,7 +8,7 @@
     z-index: 999;
     display: flex;
 }
-.Dialog{ 
+.Dialog{
     z-index: 1000;
     background: #fff;
     width: 30vw;
@@ -116,9 +116,6 @@
     text-decoration: none;
     margin-right: 18px;
 }
-<<<<<<< HEAD
 .Dialog__footer-cancel:hover{
     background-image: linear-gradient(#fff,#fff, #c1c7cd);
 }
-=======
->>>>>>> 980c55f9d4ef975d1475ffa7b35441ce8795daa3
