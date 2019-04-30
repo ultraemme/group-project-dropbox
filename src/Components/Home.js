@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Dropbox } from 'dropbox';
 import { token$, updateToken } from '../Store';
+import { Redirect } from 'react-router-dom';
 import Header from './Header';
 import Content from './Content';
 import Navigation from './Navigation';
@@ -52,6 +53,21 @@ function downdloadFile (){
 
 
 const Home = (props) => {
+  const [currentPath, setCurrentPath] = useState("");
+  const [redirectLogout, setRedirectLogout] = useState(false);
+
+  function signOut () {
+    setRedirectLogout(true);
+    updateToken(null);
+  }
+
+  function setPath () {
+    //set currentPath from content
+  }
+
+  function formatPath () {
+    //takes currentPath, returns formatted path to pass to header
+  }
 
   useEffect(() => {
     let token = window.location.search.replace('?code=', '');
@@ -65,25 +81,30 @@ const Home = (props) => {
       })
       .catch(err => {
         console.log(err.response.data)
+        setRedirectLogout(true);
       })
     }
-  }, [])
+  }, []);
+
+  useEffect(() => {
+
+  }, [currentPath]);
 
   return (
-    <div className={styles.home}>
-      <div className={styles['home__left-container']}>
-        <Navigation />
-      </div>
-      <div className={styles['home__right-container']}>
-        <Header />
-        <Content />
-      </div>
+    <>
       {
-        // <p>Home</p>
-        // <button onClick={getSomething}>Get something</button>
-        // <button onClick={newFile}>new file</button>
+        redirectLogout ? <Redirect to="/"/> :
+          <div className={styles.home}>
+            <div className={styles['home__left-container']}>
+              <Navigation signOut={signOut}/>
+            </div>
+            <div className={styles['home__right-container']}>
+              <Header/>
+              <Content currentPath={currentPath}/>
+            </div>
+          </div>
       }
-    </div>
+    </>
   )
 }
 
