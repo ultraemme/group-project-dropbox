@@ -8,14 +8,6 @@ import Content from './Content';
 import Navigation from './Navigation';
 import styles from './Home.module.css';
 
-function getSomething() {
-  let dbx = new Dropbox({accessToken: token$.value, fetch});
-  console.log('dbx', dbx); //list methods
-  dbx.filesListFolder({path: ''})
-  .then(res => {
-    console.log(JSON.parse(res));
-  })
-}
 function newFile (){
   let dbx = new Dropbox({accessToken: token$.value, fetch});
   console.log('dbx', dbx); //list methods
@@ -50,11 +42,12 @@ function downdloadFile (){
   })
 }
 
-
+let dbx;
 
 const Home = (props) => {
   const [currentPath, setCurrentPath] = useState("");
   const [redirectLogout, setRedirectLogout] = useState(false);
+  const [didMount, setDidMount] = useState(false);
 
   function signOut () {
     setRedirectLogout(true);
@@ -78,17 +71,28 @@ const Home = (props) => {
       .then((res) => {
         console.log(res);
         updateToken(res.data.access_token);
+        setDidMount(true);
       })
       .catch(err => {
         console.log(err.response.data)
         setRedirectLogout(true);
       })
     }
+    else{
+      setDidMount(true);
+    }
   }, []);
 
   useEffect(() => {
-
-  }, [currentPath]);
+    if(didMount){
+      dbx = new Dropbox({accessToken: token$.value, fetch});
+      console.log('dbx', dbx); //list methods
+      dbx.filesListFolder({path: currentPath})
+      .then(res => {
+        console.log(JSON.parse(res));
+      })
+    }
+  }, [didMount]);
 
   return (
     <>
