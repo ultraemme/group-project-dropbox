@@ -42,10 +42,20 @@ function downdloadFile (){
   })
 }
 
+
+
+
+
+
+
+
+
+
 let dbx;
 
 const Home = (props) => {
   const [currentPath, setCurrentPath] = useState("");
+  const [currentFolder, setCurrentFolder] = useState({});
   const [redirectLogout, setRedirectLogout] = useState(false);
   const [didMount, setDidMount] = useState(false);
 
@@ -54,8 +64,11 @@ const Home = (props) => {
     updateToken(null);
   }
 
-  function setPath () {
-    //set currentPath from content
+  function setPath (path) {
+    console.log(path);
+    let newPath = currentPath + path;
+    setCurrentPath(newPath);
+    console.log('state path', currentPath);
   }
 
   function formatPath () {
@@ -86,13 +99,25 @@ const Home = (props) => {
   useEffect(() => {
     if(didMount){
       dbx = new Dropbox({accessToken: token$.value, fetch});
-      console.log('dbx', dbx); //list methods
       dbx.filesListFolder({path: currentPath})
       .then(res => {
-        console.log(JSON.parse(res));
+        console.log(res);
+        setCurrentFolder(res);
       })
     }
   }, [didMount]);
+
+  useEffect(() => {
+    if (didMount) {
+      dbx = new Dropbox({accessToken: token$.value, fetch});
+      dbx.filesListFolder({path: currentPath})
+        .then(res => {
+          setCurrentFolder(res);
+        })
+    }
+  }, [currentPath])
+
+
 
   return (
     <>
@@ -104,7 +129,7 @@ const Home = (props) => {
             </div>
             <div className={styles['home__right-container']}>
               <Header/>
-              <Content currentPath={currentPath}/>
+              <Content setPath={setPath} currentFolder={currentFolder}/>
             </div>
           </div>
       }
