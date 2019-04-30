@@ -7,7 +7,7 @@
     display: flex;
 }
 .Dialog{ 
-    z-index: 1000;  
+    z-index: 1000;
     background: #fff;
     width: 30vw;
     height: 45vh;
