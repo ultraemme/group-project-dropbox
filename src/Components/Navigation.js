@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styles from './Navigation.module.css';
 
 const Navigation = (props) => {
+
   return (
     <nav className={styles.nav}>
       <div className={styles['nav__user-container']}>
@@ -28,7 +29,7 @@ const Navigation = (props) => {
             <button>Upload folder</button>
           </li>
           <li>
-            <button>New folder</button>
+            <button onClick={props.newFile}>New folder</button>
           </li>
         </ul>
       </div>

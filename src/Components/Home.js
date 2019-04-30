@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Dropbox } from 'dropbox';
 import { token$, updateToken } from '../Store';
@@ -6,73 +6,76 @@ import Header from './Header';
 import Content from './Content';
 import Navigation from './Navigation';
 import styles from './Home.module.css';
+import Dialog from './Dialog'
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+
 
 function getSomething() {
-  let dbx = new Dropbox({accessToken: token$.value, fetch});
+  let dbx = new Dropbox({ accessToken: token$.value, fetch });
   console.log('dbx', dbx); //list methods
-  dbx.filesListFolder({path: ''})
-  .then(res => {
-    console.log(JSON.parse(res));
-  })
+  dbx.filesListFolder({ path: '' })
+    .then(res => {
+      console.log(JSON.parse(res));
+    })
 }
-function newFile (){
-  let dbx = new Dropbox({accessToken: token$.value, fetch});
+function newFile() {
+  let dbx = new Dropbox({ accessToken: token$.value, fetch });
   console.log('dbx', dbx); //list methods
-  dbx.filesCreateFolder({path: '/fisken gädda'})
-  .then(res => {
-    console.log(JSON.parse(res));
-  })
+  dbx.filesCreateFolder({ path: '/fisken gädda' })
+    .then(res => {
+      console.log(JSON.parse(res));
+    })
 }
-function moveFile(){
-  let dbx = new Dropbox({accessToken: token$.value, fetch});
+function moveFile() {
+  let dbx = new Dropbox({ accessToken: token$.value, fetch });
   console.log('dbx', dbx); //list methods
   dbx.filesMoveV2({
-    from_path:"/jonas/jonas.jpg",
-    to_path:"/test/jonas.jpg",
-    autorename:true,
+    from_path: "/jonas/jonas.jpg",
+    to_path: "/test/jonas.jpg",
+    autorename: true,
   })
 }
-function deleteFile(){
-  let dbx = new Dropbox({accessToken: token$.value, fetch});
+function deleteFile() {
+  let dbx = new Dropbox({ accessToken: token$.value, fetch });
   console.log('dbx', dbx); //list methods
-  dbx.filesDeleteV2({path: '/fisken gädda'})
-  .then(res => {
-    console.log(JSON.parse(res));
-  })
+  dbx.filesDeleteV2({ path: '/fisken gädda' })
+    .then(res => {
+      console.log(JSON.parse(res));
+    })
 }
-function downdloadFile (){
-  let dbx = new Dropbox({accessToken: token$.value, fetch});
+function downdloadFile() {
+  let dbx = new Dropbox({ accessToken: token$.value, fetch });
   console.log('dbx', dbx); //list methods
-  dbx.filesDownload({path:'/test/jonas.jpg'})
-  .then(res => {
-    console.log((res));
-  })
+  dbx.filesDownload({ path: '/test/jonas.jpg' })
+    .then(res => {
+      console.log((res));
+    })
 }
 
 
 
 const Home = (props) => {
-
+  const [newFolder, setNewFolder] = useState(false);
   useEffect(() => {
     let token = window.location.search.replace('?code=', '');
     const API = `https://api.dropboxapi.com/oauth2/token?code=${token}&grant_type=authorization_code&redirect_uri=http://localhost:3000/home&client_id=h7s722dkxc8lgct&client_secret=u81zydr2i3rbxth`;
 
-    if(!token$.value){
+    if (!token$.value) {
       axios.post(API)
-      .then((res) => {
-        console.log(res);
-        updateToken(res.data.access_token);
-      })
-      .catch(err => {
-        console.log(err.response.data)
-      })
+        .then((res) => {
+          console.log(res);
+          updateToken(res.data.access_token);
+        })
+        .catch(err => {
+          console.log(err.response.data)
+        })
     }
   }, [])
 
   return (
     <div className={styles.home}>
       <div className={styles['home__left-container']}>
-        <Navigation />
+        <Navigation newFile={() => setNewFolder(true)} />
       </div>
       <div className={styles['home__right-container']}>
         <Header />
@@ -83,6 +86,7 @@ const Home = (props) => {
         // <button onClick={getSomething}>Get something</button>
         // <button onClick={newFile}>new file</button>
       }
+      {newFolder === true ? <Dialog canselNewFile={() => setNewFolder(false)} /> : null}
     </div>
   )
 }
