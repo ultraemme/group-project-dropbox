@@ -30,6 +30,7 @@
 }
 .Dialog__header-right{
     width: 38%;
+    height: 0;
     display: flex;
     justify-content: flex-end;
 }
@@ -95,6 +96,9 @@
     overflow: visible;
     text-decoration: none;
 }
+.Dialog__footer-create:hover{
+    opacity: 0.9;
+}
 
 .Dialog__footer-cancel{
     height: 3.2rem;
@@ -111,4 +115,7 @@
     overflow: visible;
     text-decoration: none;
     margin-right: 18px;
+}
+.Dialog__footer-cancel:hover{
+    background-image: linear-gradient(#fff,#fff, #c1c7cd);
 }
