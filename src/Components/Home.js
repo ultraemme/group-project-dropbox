@@ -60,7 +60,6 @@ const Home = (props) => {
   }, [didMount]);
 
   useEffect(() => {
-    console.log("test", currentPath);
     if (didMount) {
       const dbx = new Dropbox({accessToken: token$.value, fetch});
       dbx.filesListFolder({path: currentPath})
