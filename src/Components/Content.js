@@ -3,7 +3,6 @@ import styles from './Content.module.css';
 import { Link } from 'react-router-dom';
 
 function getFileType(tag){
-  console.log(tag);
   return tag === 'folder' ?
     <i className={`material-icons ${styles['content__table-icon']}`}>folder</i> :
     <i className={`material-icons ${styles['content__table-icon']}`}>insert_drive_file</i>
@@ -14,7 +13,6 @@ function formatSize(byte){
     return byte + ' byte';
   }
   else if(byte >= 1000 && byte < 1000000){
-    console.log(byte);
     let kiloByte = (byte / 1000).toFixed(2) + ' kB';
     return kiloByte
   }
@@ -46,8 +44,6 @@ const Content = (props) => {
           </thead>
           <tbody>
             {props.currentFolder.entries.map((file) => {
-              console.log(file);
-
               return (
                 <tr className={styles['content__table-row']} key={file.id}>
                   <td className={styles['content__table-td']}><i className="material-icons">star</i></td>

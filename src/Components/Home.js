@@ -29,6 +29,52 @@ const Home = (props) => {
     //takes currentPath, returns formatted path to pass to header
   }
 
+  function uploadFileRequest(files){
+    if(!files.length) return;
+    if(files[0].size < 150000000){
+      console.log('The size is lower than 150 MB')
+      const dbx = new Dropbox({accessToken: token$.value, fetch});
+      dbx.filesUpload({contents: files[0], path: `${currentPath}/${files[0].name}`, mode: 'add', autorename: true, mute: false, strict_conflict: false})
+      .then((res) => {
+        const dbx = new Dropbox({accessToken: token$.value, fetch});
+        dbx.filesListFolder({path: currentPath})
+          .then(res => {
+            setCurrentFolder(res);
+            setUploadFile(false);
+          })
+      })
+    }
+    else{
+      console.log('The size is HIGHER than 150 MB');
+      const dbx = new Dropbox({accessToken: token$.value, fetch});
+      dbx.filesUploadSessionStart({contents: files[0], close: false})
+      .then((res) => {
+        const dbx = new Dropbox({accessToken: token$.value, fetch});
+        dbx.filesUploadSessionFinish({
+          cursor: {
+            session_id: res.session_id,
+            offset: files[0].size,
+          },
+          commit: {
+            path: `${currentPath}/${files[0].name}`,
+            mode: 'add',
+            autorename: true,
+            mute: false,
+            strict_conflict: false,
+          }
+        })
+        .then((res) => {
+          const dbx = new Dropbox({accessToken: token$.value, fetch});
+          dbx.filesListFolder({path: currentPath})
+            .then(res => {
+              setCurrentFolder(res);
+              setUploadFile(false);
+            })
+        })
+      })
+    }
+  }
+
   useEffect(() => {
     let token = window.location.search.replace('?code=', '');
     const API = `https://api.dropboxapi.com/oauth2/token?code=${token}&grant_type=authorization_code&redirect_uri=http://localhost:3000/home&client_id=h7s722dkxc8lgct&client_secret=u81zydr2i3rbxth`;
@@ -85,7 +131,7 @@ const Home = (props) => {
             </div>
           </div>
       }
-      {uploadFile ? <UploadFile /> : null}
+      {uploadFile ? <UploadFile closeClick={() => setUploadFile(false)} uploadFileRequest={uploadFileRequest}/> : null}
       {newFolder === true ? <Dialog canselNewFile={() => setNewFolder(false)} /> : null}
     </>
   )
