@@ -4,3 +4,9 @@
   background: #e0e0e0;
   z-index: -1;
 }
+.header__link{
+  font-size: 2rem;
+}
+.header__link-arrow{
+  font-size: 2rem;
+}

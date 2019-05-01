@@ -13,8 +13,8 @@ const Header = (props) => {
           currentDir += `/${path}`;
           return (
           <span key={path}>
-            <Link to={currentDir}>{path}</Link>
-            <span> > </span>
+            <Link className={styles['header__link']} to={currentDir}>{path}</Link>
+            <span className={styles['header__link-arrow']}> > </span>
           </span>
         )
       })
