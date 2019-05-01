@@ -8,11 +8,13 @@ import Content from './Content';
 import Navigation from './Navigation';
 import styles from './Home.module.css';
 import Dialog from './Dialog';
+import UploadFile from './UploadFile';
 
 const Home = (props) => {
   // console.log("HEJ", props.location);
 
   const currentPath = props.location.pathname.substr(5);
+  const [uploadFile, setUploadFile] = useState(false);
   const [newFolder, setNewFolder] = useState(false);
   const [currentFolder, setCurrentFolder] = useState({});
   const [redirectLogout, setRedirectLogout] = useState(false);
@@ -75,7 +77,7 @@ const Home = (props) => {
         redirectLogout ? <Redirect to="/"/> :
           <div className={styles.home}>
             <div className={styles['home__left-container']}>
-              <Navigation newFile={() => setNewFolder(true)} signOut={signOut}/>
+              <Navigation newFile={() => setNewFolder(true)} uploadFile={() => setUploadFile(true)} signOut={signOut}/>
             </div>
             <div className={styles['home__right-container']}>
               <Header currentPath={props.location}/>
@@ -83,6 +85,7 @@ const Home = (props) => {
             </div>
           </div>
       }
+      {uploadFile ? <UploadFile /> : null}
       {newFolder === true ? <Dialog canselNewFile={() => setNewFolder(false)} /> : null}
     </>
   )
