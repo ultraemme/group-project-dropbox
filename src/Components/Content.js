@@ -69,7 +69,7 @@ const Content = (props) => {
                   <td className={styles['content__table-td']}><Link className={styles['content__link']} to={`/home${file.path_display}`}>{file.name}</Link></td>
                   <td className={styles['content__table-td']}>{file.server_modified ? formatLastModified(file.server_modified) : null}</td>
                   <td className={styles['content__table-td']}>{formatSize(file.size)}</td>
-                  <td className={styles['content__table-td']}>V</td>
+                  <td className={styles['content__table-td']}><span className={`${styles['content__table-dropdown']} material-icons`}>more_horiz</span></td>
                 </tr>
               )
             })}
