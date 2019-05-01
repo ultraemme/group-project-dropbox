@@ -23,14 +23,22 @@
 }
 .header__container .header__link:nth-last-child(2){
   color: #E91E63;
-  animation: bigger 0.5s ease-in;
+  animation: shake 0.4s ease-in;
 }
-@keyframes bigger {
-  0%   {transform: scale(1);}
-  50% {transform: scale(1.2);}
-  100% {transform: scale(1);}
+@keyframes shake {
+  0%{
+    transform: translate(-2px, 0);
+  }
+  33%{
+    transform: translate(2px, 0);
+  }
+  66%{
+    transform: translate(-2px, 0);
+  }
+  100%{
+    transform: translate(0, 0);
+  }
 }
 .header__container .header__link-arrow:nth-last-child(1){
   display: none;
 }
- 
