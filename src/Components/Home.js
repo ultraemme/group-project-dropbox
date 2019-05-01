@@ -7,57 +7,10 @@ import Header from './Header';
 import Content from './Content';
 import Navigation from './Navigation';
 import styles from './Home.module.css';
-import Dialog from './Dialog'
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-
-
-function newFile (){
-  let dbx = new Dropbox({accessToken: token$.value, fetch});
-  console.log('dbx', dbx); //list methods
-  dbx.filesCreateFolder({ path: '/fisken gädda' })
-    .then(res => {
-      console.log(JSON.parse(res));
-    })
-}
-function moveFile() {
-  let dbx = new Dropbox({ accessToken: token$.value, fetch });
-  console.log('dbx', dbx); //list methods
-  dbx.filesMoveV2({
-    from_path: "/jonas/jonas.jpg",
-    to_path: "/test/jonas.jpg",
-    autorename: true,
-  })
-}
-function deleteFile() {
-  let dbx = new Dropbox({ accessToken: token$.value, fetch });
-  console.log('dbx', dbx); //list methods
-  dbx.filesDeleteV2({ path: '/fisken gädda' })
-    .then(res => {
-      console.log(JSON.parse(res));
-    })
-}
-function downdloadFile() {
-  let dbx = new Dropbox({ accessToken: token$.value, fetch });
-  console.log('dbx', dbx); //list methods
-  dbx.filesDownload({ path: '/test/jonas.jpg' })
-    .then(res => {
-      console.log((res));
-    })
-}
-
-
-
-
-
-
-
-
-
-
-// let dbx;
+import Dialog from './Dialog';
 
 const Home = (props) => {
-  console.log("HEJ", props.location);
+  // console.log("HEJ", props.location);
 
   const currentPath = props.location.pathname.substr(5);
   const [newFolder, setNewFolder] = useState(false);

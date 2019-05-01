@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styles from './Content.module.css';
 import { Link } from 'react-router-dom';
 
 const Content = (props) => {
-  console.log(props.currentFolder.entries);
+  // console.log(props.currentFolder.entries);
 
   return (
     <section className={styles.content}>
