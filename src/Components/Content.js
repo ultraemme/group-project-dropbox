@@ -1,6 +1,15 @@
 import React from 'react';
 import styles from './Content.module.css';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
+
+function formatLastModified (date) {
+  if (moment(new Date()).diff(date, 'days') > 2) {
+    return moment(date).format('MMMM Do YYYY, h:mm')
+  } else {
+    return moment(date).fromNow();
+  }
+}
 
 function getFileType(tag){
   console.log(tag);
@@ -11,11 +20,11 @@ function getFileType(tag){
 function formatSize(byte){
   if(!byte) return;
   if(byte < 1000){
-    return byte + ' byte';
+    return byte + ' bytes';
   }
   else if(byte >= 1000 && byte < 1000000){
     console.log(byte);
-    let kiloByte = (byte / 1000).toFixed(2) + ' kB';
+    let kiloByte = (byte / 1000).toFixed(2) + ' KB';
     return kiloByte
   }
   else if(byte >= 1000000 && byte < 1000000000){
@@ -53,7 +62,7 @@ const Content = (props) => {
                   <td className={styles['content__table-td']}><i className="material-icons">star</i></td>
                   <td className={styles['content__table-td']}>{getFileType(file[".tag"])}</td>
                   <td className={styles['content__table-td']}><Link className={styles['content__link']} to={`/home${file.path_display}`}>{file.name}</Link></td>
-                  <td className={styles['content__table-td']}>Last modified</td>
+                  <td className={styles['content__table-td']}>{file.server_modified ? formatLastModified(file.server_modified) : null}</td>
                   <td className={styles['content__table-td']}>{formatSize(file.size)}</td>
                   <td className={styles['content__table-td']}>V</td>
                 </tr>
