@@ -23,7 +23,7 @@ const Navigation = (props) => {
         <span className={styles['nav__line']}></span>
         <ul className={styles['nav__ul']}>
           <li>
-            <button>Upload file</button>
+            <button onClick={props.uploadFile}>Upload file</button>
           </li>
           <li>
             <button>Upload folder</button>

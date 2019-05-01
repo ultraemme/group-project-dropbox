@@ -22,8 +22,7 @@ function formatSize(byte){
     return byte + ' bytes';
   }
   else if(byte >= 1000 && byte < 1000000){
-    console.log(byte);
-    let kiloByte = (byte / 1000).toFixed(2) + ' KB';
+    let kiloByte = (byte / 1000).toFixed(2) + ' kB';
     return kiloByte
   }
   else if(byte >= 1000000 && byte < 1000000000){

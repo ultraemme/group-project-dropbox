@@ -8,11 +8,13 @@ import Content from './Content';
 import Navigation from './Navigation';
 import styles from './Home.module.css';
 import Dialog from './Dialog';
+import UploadFile from './UploadFile';
 
 const Home = (props) => {
   // console.log("HEJ", props.location);
 
   const currentPath = props.location.pathname.substr(5);
+  const [uploadFile, setUploadFile] = useState(false);
   const [newFolder, setNewFolder] = useState(false);
   const [currentFolder, setCurrentFolder] = useState({});
   const [redirectLogout, setRedirectLogout] = useState(false);
@@ -25,6 +27,52 @@ console.log (currentPath);
 
   function formatPath () {
     //takes currentPath, returns formatted path to pass to header
+  }
+
+  function uploadFileRequest(files){
+    if(!files.length) return;
+    if(files[0].size < 150000000){
+      console.log('The size is lower than 150 MB')
+      const dbx = new Dropbox({accessToken: token$.value, fetch});
+      dbx.filesUpload({contents: files[0], path: `${currentPath}/${files[0].name}`, mode: 'add', autorename: true, mute: false, strict_conflict: false})
+      .then((res) => {
+        const dbx = new Dropbox({accessToken: token$.value, fetch});
+        dbx.filesListFolder({path: currentPath})
+          .then(res => {
+            setCurrentFolder(res);
+            setUploadFile(false);
+          })
+      })
+    }
+    else{
+      console.log('The size is HIGHER than 150 MB');
+      const dbx = new Dropbox({accessToken: token$.value, fetch});
+      dbx.filesUploadSessionStart({contents: files[0], close: false})
+      .then((res) => {
+        const dbx = new Dropbox({accessToken: token$.value, fetch});
+        dbx.filesUploadSessionFinish({
+          cursor: {
+            session_id: res.session_id,
+            offset: files[0].size,
+          },
+          commit: {
+            path: `${currentPath}/${files[0].name}`,
+            mode: 'add',
+            autorename: true,
+            mute: false,
+            strict_conflict: false,
+          }
+        })
+        .then((res) => {
+          const dbx = new Dropbox({accessToken: token$.value, fetch});
+          dbx.filesListFolder({path: currentPath})
+            .then(res => {
+              setCurrentFolder(res);
+              setUploadFile(false);
+            })
+        })
+      })
+    }
   }
 
   useEffect(() => {
@@ -75,7 +123,7 @@ console.log (currentPath);
         redirectLogout ? <Redirect to="/"/> :
           <div className={styles.home}>
             <div className={styles['home__left-container']}>
-              <Navigation newFile={() => setNewFolder(true)} signOut={signOut}/>
+              <Navigation newFile={() => setNewFolder(true)} uploadFile={() => setUploadFile(true)} signOut={signOut}/>
             </div>
             <div className={styles['home__right-container']}>
               <Header currentPath={props.location}/>
@@ -83,6 +131,7 @@ console.log (currentPath);
             </div>
           </div>
       }
+      {uploadFile ? <UploadFile closeClick={() => setUploadFile(false)} uploadFileRequest={uploadFileRequest}/> : null}
       {newFolder === true ? <Dialog currentPath={currentPath} exitDialog={() => setNewFolder(false)} /> : null}
     </>
   )
