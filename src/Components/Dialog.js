@@ -5,7 +5,7 @@ import { token$, updateToken } from '../Store';
 
 const Dialog = (props) => {
     const [folderName,setFoldername] = useState("");
-    
+
     function handleFolderName(e) {
         setFoldername(e.target.value);
     }
@@ -14,7 +14,7 @@ const Dialog = (props) => {
         let dbx = new Dropbox({accessToken: token$.value, fetch});
         console.log('dbx', dbx); //list methods
         dbx.filesCreateFolder({ path: props.currentPath + "/" + folderName})
-        props.exitDialog();
+        .then(()=> props.exitDialog());
     }
 
     return (
