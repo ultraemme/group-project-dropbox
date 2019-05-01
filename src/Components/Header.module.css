@@ -10,3 +10,16 @@
 .header__link-arrow{
   font-size: 2rem;
 }
+
+.header__link{
+  color: black;
+  text-decoration: none;
+  font-weight: bold;
+  
+}
+.header:nth-child(1){
+  color: #E91E63;
+}
+.header__container{
+  Color:black;
+}
