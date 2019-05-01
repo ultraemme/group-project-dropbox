@@ -17,7 +17,7 @@ const Home = (props) => {
   const [currentFolder, setCurrentFolder] = useState({});
   const [redirectLogout, setRedirectLogout] = useState(false);
   const [didMount, setDidMount] = useState(false);
-
+console.log (currentPath);
   function signOut () {
     setRedirectLogout(true);
     updateToken(null);
@@ -61,13 +61,14 @@ const Home = (props) => {
 
   useEffect(() => {
     if (didMount) {
+      console.log("update list")
       const dbx = new Dropbox({accessToken: token$.value, fetch});
       dbx.filesListFolder({path: currentPath})
         .then(res => {
           setCurrentFolder(res);
         })
     }
-  }, [currentPath])
+  }, [currentPath, newFolder])
   return (
     <>
       {
@@ -82,7 +83,7 @@ const Home = (props) => {
             </div>
           </div>
       }
-      {newFolder === true ? <Dialog canselNewFile={() => setNewFolder(false)} /> : null}
+      {newFolder === true ? <Dialog currentPath={currentPath} exitDialog={() => setNewFolder(false)} /> : null}
     </>
   )
 }

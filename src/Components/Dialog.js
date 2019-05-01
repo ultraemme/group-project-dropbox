@@ -1,7 +1,22 @@
-import React from 'react';
+import React,{useState, useEffect} from 'react';
 import styles from './Dialog.module.css';
+import { Dropbox } from 'dropbox';
+import { token$, updateToken } from '../Store';
 
 const Dialog = (props) => {
+    const [folderName,setFoldername] = useState("");
+    
+    function handleFolderName(e) {
+        setFoldername(e.target.value);
+    }
+
+    function handleNewFolder() {
+        let dbx = new Dropbox({accessToken: token$.value, fetch});
+        console.log('dbx', dbx); //list methods
+        dbx.filesCreateFolder({ path: props.currentPath + "/" + folderName})
+        props.exitDialog();
+    }
+
     return (
         <div className={styles.overlay}>
             <div className={styles.Dialog}>
@@ -12,16 +27,16 @@ const Dialog = (props) => {
                     </div>
 
                     <div className={styles['Dialog__header-right']}>
-                        <i onClick={props.canselNewFile} className={`material-icons ${styles['Dialog__header-close']}`}>close</i>
+                        <i onClick={props.exitDialog} className={`material-icons ${styles['Dialog__header-close']}`}>close</i>
                     </div>
                 </div>
                 <div className={styles.Dialog__content}>
                     <span className={styles['Dialog__content-text']} >Give this folder a name</span>
-                    <input type="text" className={styles['Dialog__content-input']} placeholder="Folder Name..." />
+                    <input onChange={handleFolderName} value={folderName} type="text" className={styles['Dialog__content-input']} placeholder="Folder Name..." />
                 </div>
                 <div className={styles.Dialog__footer}>
-                    <button onClick={props.canselNewFile} className={styles['Dialog__footer-cancel']}>Cancel</button>
-                    <button className={styles['Dialog__footer-create']}>Create</button>
+                    <button onClick={props.exitDialog} className={styles['Dialog__footer-cancel']}>Cancel</button>
+                    <button onClick={handleNewFolder} className={styles['Dialog__footer-create']}>Create</button>
                 </div>
             </div>
         </div>
