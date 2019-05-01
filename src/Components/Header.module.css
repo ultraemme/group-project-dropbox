@@ -27,7 +27,7 @@
 }
 @keyframes bigger {
   0%   {transform: scale(1);}
-  50% {transform: scale(1.2);}
+  50% {transform: scale(1.1);}
   100% {transform: scale(1);}
 }
 .header__container .header__link-arrow:nth-last-child(1){
