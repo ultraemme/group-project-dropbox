@@ -6,7 +6,11 @@ const Navigation = (props) => {
   return (
     <nav className={styles.nav}>
       <div className={styles['nav__user-container']}>
-        <button onClick={props.signOut}>Sign out</button>
+        <div className={styles['nav__user-wrapper']}>
+          <h4 className={styles['nav__username']}>{props.user.display_name}</h4>
+          <h5 className={styles['nav__email']}>{props.user.email}</h5>
+        </div>
+        <button className={styles['nav__logout-btn']} onClick={props.signOut}>Sign out</button>
       </div>
       <div className={styles['nav__btns-container']}>
         <ul className={styles['nav__ul']}>

@@ -19,6 +19,7 @@ const Home = (props) => {
   const [currentFolder, setCurrentFolder] = useState({});
   const [redirectLogout, setRedirectLogout] = useState(false);
   const [didMount, setDidMount] = useState(false);
+  const [user, setUser] = useState({});
 console.log (currentPath);
   function signOut () {
     setRedirectLogout(true);
@@ -99,6 +100,16 @@ console.log (currentPath);
   useEffect(() => {
     if(didMount){
       const dbx = new Dropbox({accessToken: token$.value, fetch});
+      dbx.usersGetCurrentAccount()
+      .then((res) => {
+        console.log(res);
+        let user = {
+          display_name: res.name.display_name,
+          email: res.email,
+        }
+        setUser(user);
+      })
+      // const dbx = new Dropbox({accessToken: token$.value, fetch});
       dbx.filesListFolder({path: currentPath})
       .then(res => {
         console.log(res);
@@ -123,7 +134,7 @@ console.log (currentPath);
         redirectLogout ? <Redirect to="/"/> :
           <div className={styles.home}>
             <div className={styles['home__left-container']}>
-              <Navigation newFile={() => setNewFolder(true)} uploadFile={() => setUploadFile(true)} signOut={signOut}/>
+              <Navigation newFile={() => setNewFolder(true)} uploadFile={() => setUploadFile(true)} signOut={signOut} user={user}/>
             </div>
             <div className={styles['home__right-container']}>
               <Header currentPath={props.location}/>
