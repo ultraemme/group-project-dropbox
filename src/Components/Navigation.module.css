@@ -7,9 +7,40 @@
   box-sizing: border-box;
 }
 .nav__user-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   width: 100%;
-  height: 200px;
-  background: #EEEEEE;
+  height: 150px;
+}
+.nav__user-wrapper{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  padding: 0 0 0 10px;
+}
+.nav__username{
+  margin: 0;
+  font-size: 2rem;
+  color: #616161;
+}
+.nav__email{
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: #9E9E9E;
+}
+.nav__logout-btn{
+  border: none;
+  background: rgba(233, 30, 99, 1);
+  color: #fff;
+  font-size: 1.6rem;
+  padding: 10px 0 10px 0;
+  cursor: pointer;
+}
+.nav__logout-btn:hover{
+  background: rgba(233, 30, 99, 0.9);
 }
 .nav__btns-container{
   display: flex;
@@ -22,7 +53,8 @@
 .nav__line{
   width: 100%;
   height: 1px;
-  background: black;
+  background: #E0E0E0;
+  margin: 15px 0 15px 0;
 }
 .nav__ul{
   display: flex;
@@ -35,7 +67,7 @@
 .nav__ul li{
   margin: 5px 0 5px 0;
 }
-.nav button{
+.nav__btns-container button{
   background: none;
   border: none;
   font-size: 1.6rem;
