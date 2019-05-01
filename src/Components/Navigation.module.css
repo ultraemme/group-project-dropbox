@@ -6,12 +6,19 @@
   z-index: 100;
   box-sizing: border-box;
 }
-.nav__user-container{
+.nav__head{
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
   height: 150px;
+}
+.nav__logo-user-wrapper{
+  display: flex;
+  padding: 5px;
+}
+.nav__logo{
+  width: 50px;
 }
 .nav__user-wrapper{
   display: flex;

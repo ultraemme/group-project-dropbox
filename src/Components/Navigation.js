@@ -1,14 +1,18 @@
 import React from 'react';
 import styles from './Navigation.module.css';
+import logo from '../lockbox_logo.svg';
 
 const Navigation = (props) => {
 
   return (
     <nav className={styles.nav}>
-      <div className={styles['nav__user-container']}>
-        <div className={styles['nav__user-wrapper']}>
-          <h4 className={styles['nav__username']}>{props.user.display_name}</h4>
-          <h5 className={styles['nav__email']}>{props.user.email}</h5>
+      <div className={styles['nav__head']}>
+        <div className={styles['nav__logo-user-wrapper']}>
+          <img className={styles['nav__logo']} src={logo}></img>
+          <div className={styles['nav__user-wrapper']}>
+            <h4 className={styles['nav__username']}>{props.user.display_name}</h4>
+            <h5 className={styles['nav__email']}>{props.user.email}</h5>
+          </div>
         </div>
         <button className={styles['nav__logout-btn']} onClick={props.signOut}>Sign out</button>
       </div>
