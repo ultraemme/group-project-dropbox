@@ -39,7 +39,6 @@ function formatSize(byte){
 const Content = (props) => {
   const [stars, setStars] = useState([]);
   const [dropdown, setDropdown] = useState({toggled: false});
-
   function toggleDropdown (e, file) {
     if (dropdown.toggled === true) {
       setDropdown({toggled: false});
@@ -58,7 +57,7 @@ const Content = (props) => {
   return (
     <section className={styles.content}>
       {
-        !props.currentFolder.entries ? <div>Loading...</div> :
+        !props.currentFolder ? <div>Loading...</div> :
         <table className={styles['content__table']}>
           <thead>
             <tr className={styles['content__table-row']}>
@@ -71,7 +70,7 @@ const Content = (props) => {
             </tr>
           </thead>
           <tbody>
-            {props.currentFolder.entries.map((file) => {
+            {props.currentFolder.map((file) => {
               return (
                 <tr className={styles['content__table-row']} key={file.id}>
                   <td className={styles['content__table-td']}><i className="material-icons" onClick={() => addFavorite(file)}>star</i></td>

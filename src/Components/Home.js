@@ -16,7 +16,7 @@ const Home = (props) => {
   const currentPath = props.location.pathname.substr(5);
   const [uploadFile, setUploadFile] = useState(false);
   const [newFolder, setNewFolder] = useState(false);
-  const [currentFolder, setCurrentFolder] = useState({});
+  const [currentFolder, setCurrentFolder] = useState([]);
   const [redirectLogout, setRedirectLogout] = useState(false);
   const [didMount, setDidMount] = useState(false);
   const [user, setUser] = useState({});
@@ -55,7 +55,7 @@ const Home = (props) => {
         const dbx = new Dropbox({accessToken: token$.value, fetch});
         dbx.filesListFolder({path: currentPath})
           .then(res => {
-            setCurrentFolder(res);
+            setCurrentFolder(res.entries);
             setUploadFile(false);
           })
       })
@@ -83,7 +83,7 @@ const Home = (props) => {
           const dbx = new Dropbox({accessToken: token$.value, fetch});
           dbx.filesListFolder({path: currentPath})
             .then(res => {
-              setCurrentFolder(res);
+              setCurrentFolder(res.entries);
               setUploadFile(false);
             })
         })
@@ -128,18 +128,17 @@ const Home = (props) => {
       dbx.filesListFolder({path: currentPath})
       .then(res => {
         console.log(res);
-        setCurrentFolder(res);
+        setCurrentFolder(res.entries);
       })
     }
   }, [didMount]);
 
   useEffect(() => {
     if (didMount) {
-      console.log("update list")
       const dbx = new Dropbox({accessToken: token$.value, fetch});
       dbx.filesListFolder({path: currentPath})
         .then(res => {
-          setCurrentFolder(res);
+          setCurrentFolder(res.entries);
         })
     }
   }, [currentPath, newFolder]);
@@ -147,7 +146,7 @@ const Home = (props) => {
   function searchFile (e) {
     setSearchValue(e.target.value)
     const dbx = new Dropbox({accessToken: token$.value, fetch});
-    dbx.filesSearch({ 
+    dbx.filesSearch({
       path: "",
       query: searchValue,
     })
