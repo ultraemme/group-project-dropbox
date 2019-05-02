@@ -39,7 +39,7 @@ function formatSize(byte){
 const Content = (props) => {
   const [stars, setStars] = useState([]);
   const [dropdown, setDropdown] = useState({toggled: false});
-  
+
   function toggleDropdown (e, file) {
     if (dropdown.toggled === true) {
       setDropdown({toggled: false});
@@ -53,6 +53,10 @@ const Content = (props) => {
     let arr = stars;
     arr.push(starredFile);
     setStars(arr);
+  }
+
+  function getCorrectTag(){
+    console.log('hello');
   }
 
   return (
