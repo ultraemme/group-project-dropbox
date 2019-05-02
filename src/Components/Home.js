@@ -44,10 +44,6 @@ const Home = (props) => {
       })
   }
 
-  function formatPath() {
-    //takes currentPath, returns formatted path to pass to header
-  }
-
   function downloadFileRequest(fileName, filePath) {
     const dbx = new Dropbox({ accessToken: token$.value, fetch });
     dbx.filesDownload({ path: filePath })
