@@ -87,7 +87,7 @@ const Content = (props) => {
           </tbody>
        </table>
       }
-      {dropdown.toggled ? <Dropdown deleteFile={props.deleteFile} toggleDropdown={toggleDropdown} posX={dropdown.posX} posY={dropdown.posY} file={dropdown.file}/> : null}
+      {dropdown.toggled ? <Dropdown downloadFile={props.downloadFile} deleteFile={props.deleteFile} toggleDropdown={toggleDropdown} posX={dropdown.posX} posY={dropdown.posY} file={dropdown.file}/> : null}
     </section>
   )
 }
