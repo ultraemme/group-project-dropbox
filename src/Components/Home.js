@@ -140,7 +140,7 @@ const Home = (props) => {
         })
     }
   }, [currentPath, newFolder]);
-  
+
   useEffect(() => {
     if (!searchValue) {
       const dbx = new Dropbox({ accessToken: token$.value, fetch });
@@ -159,7 +159,6 @@ const Home = (props) => {
           let value = res.matches.map(file => {
             return file.metadata
           })
-          console.log(value);
           setSearchFileObj(value)
         })
         .then(() => {

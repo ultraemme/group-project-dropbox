@@ -6,9 +6,6 @@ import { Link } from 'react-router-dom';
 const Header = (props) => {
   const pathArr = props.currentPath.pathname.substr(1).split('/');
   let currentDir = "";
-
-
-
   return (
     <header className={styles.header}>
       {<div className={styles.header__container}>
@@ -23,9 +20,7 @@ const Header = (props) => {
             )
           })
         }
-
       </div>
-
       }
       <div className={styles.header__search}>
         <form className={styles['header__search-form']} >
@@ -38,5 +33,4 @@ const Header = (props) => {
     </header>
   )
 }
-
 export default Header;
