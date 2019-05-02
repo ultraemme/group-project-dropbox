@@ -11,7 +11,6 @@ function formatLastModified (date) {
     return moment(date).fromNow();
   }
 }
-
 function getFileType(tag){
   return tag === 'folder' ?
     <i className={`material-icons ${styles['content__table-icon']}`}>folder</i> :
