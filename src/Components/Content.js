@@ -71,7 +71,6 @@ const Content = (props) => {
           </thead>
           <tbody>
             {props.currentFolder.map((file) => {
-              console.log(file);
               return (
                 <tr className={styles['content__table-row']} key={file.id}>
                   <td className={styles['content__table-td']}><i className="material-icons" onClick={() => addFavorite(file)}>star</i></td>
@@ -86,7 +85,7 @@ const Content = (props) => {
           </tbody>
        </table>
       }
-      {dropdown.toggled ? <Dropdown toggleDropdown={toggleDropdown} posX={dropdown.posX} posY={dropdown.posY} file={dropdown.file}/> : null}
+      {dropdown.toggled ? <Dropdown toggleDropdown={toggleDropdown} posX={dropdown.posX} posY={dropdown.posY} file={dropdown.file} renameFileFunc={props.renameFileFunc}/> : null}
     </section>
   )
 }
