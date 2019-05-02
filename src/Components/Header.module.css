@@ -24,7 +24,9 @@
 }
 .header__row:nth-last-child(1) .header__link:nth-last-child(2){
   color: #E91E63;
-  animation: shake 0.4s ease-in;
+}
+.header__row:nth-last-child(1){
+  animation: shake 0.4s linear;
 }
 @keyframes shake {
   0%{
