@@ -30,6 +30,19 @@ const Home = (props) => {
     //takes currentPath, returns formatted path to pass to header
   }
 
+  function downloadFileRequest(fileName){
+    const filePath = `${currentPath}/${fileName}`;
+    const dbx = new Dropbox({accessToken: token$.value, fetch});
+    dbx.filesDownload({path: filePath})
+    .then((res) => {
+      let url = URL.createObjectURL(res.fileBlob);
+      let downloadButton = document.createElement('a');
+      downloadButton.setAttribute('href', url);
+      downloadButton.setAttribute('download', res.name);
+      downloadButton.click();
+    })
+  }
+
   function uploadFileRequest(files){
     if(!files.length) return;
     if(files[0].size < 150000000){
@@ -139,7 +152,7 @@ const Home = (props) => {
             </div>
             <div className={styles['home__right-container']}>
               <Header currentPath={props.location}/>
-              <Content currentFolder={currentFolder} currentPath={currentPath}/>
+              <Content currentFolder={currentFolder} currentPath={currentPath} downloadFile={downloadFileRequest}/>
             </div>
           </div>
       }
