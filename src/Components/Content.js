@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styles from './Content.module.css';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import Dropdown from './Dropdown';
 
 function formatLastModified (date) {
   if (moment(new Date()).diff(date, 'days') > 2) {
@@ -37,6 +38,15 @@ function formatSize(byte){
 
 const Content = (props) => {
   const [stars, setStars] = useState([]);
+  const [dropdown, setDropdown] = useState({toggled: false});
+  
+  function toggleDropdown (e, file) {
+    if (dropdown.toggled === true) {
+      setDropdown({toggled: false});
+    } else {
+      setDropdown({toggled: true, posX: e.nativeEvent.clientX, posY: e.nativeEvent.clientY, file});
+    }
+  }
 
   function addFavorite (file) {
     let starredFile = {...file, starred: true}; //to indicate if starred, probably not needed
@@ -69,13 +79,14 @@ const Content = (props) => {
                   <td className={styles['content__table-td']}><Link className={styles['content__link']} to={`/home${file.path_display}`}>{file.name}</Link></td>
                   <td className={styles['content__table-td']}>{file.server_modified ? formatLastModified(file.server_modified) : null}</td>
                   <td className={styles['content__table-td']}>{formatSize(file.size)}</td>
-                  <td className={styles['content__table-td']}><span className={`${styles['content__table-dropdown']} material-icons`}>more_horiz</span></td>
+                  <td className={styles['content__table-td']}><span onClick={(e) => toggleDropdown(e, file)} className={`${styles['content__table-dropdown']} material-icons`}>more_horiz</span></td>
                 </tr>
               )
             })}
           </tbody>
        </table>
       }
+      {dropdown.toggled ? <Dropdown toggleDropdown={toggleDropdown} posX={dropdown.posX} posY={dropdown.posY} file={dropdown.file}/> : null}
     </section>
   )
 }

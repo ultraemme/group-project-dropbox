@@ -20,7 +20,7 @@ const Home = (props) => {
   const [redirectLogout, setRedirectLogout] = useState(false);
   const [didMount, setDidMount] = useState(false);
   const [user, setUser] = useState({});
-console.log (currentPath);
+
   function signOut () {
     setRedirectLogout(true);
     updateToken(null);
@@ -127,7 +127,8 @@ console.log (currentPath);
           setCurrentFolder(res);
         })
     }
-  }, [currentPath, newFolder])
+  }, [currentPath, newFolder]);
+
   return (
     <>
       {
