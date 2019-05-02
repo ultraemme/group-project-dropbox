@@ -231,7 +231,7 @@ const Home = (props) => {
               <Navigation newFile={() => setNewFolder(true)} uploadFile={() => setUploadFile(true)} signOut={signOut} user={user}/>
             </div>
             <div className={styles['home__right-container']}>
-              <Header currentPath={props.location} searchFile={searchFile}/>
+              <Header currentPath={props.location} searchFile={searchFile} value={searchValue}/>
               <Content currentFolder={currentFolder} currentPath={currentPath} downloadFile={downloadFileRequest} renameFileFunc={renameFileDialog} deleteFile={deleteFile}/>
             </div>
           </div>
