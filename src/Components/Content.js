@@ -39,6 +39,7 @@ function formatSize(byte){
 const Content = (props) => {
   const [stars, setStars] = useState([]);
   const [dropdown, setDropdown] = useState({toggled: false});
+
   function toggleDropdown (e, file) {
     if (dropdown.toggled === true) {
       setDropdown({toggled: false});
@@ -86,7 +87,7 @@ const Content = (props) => {
           </tbody>
        </table>
       }
-      {dropdown.toggled ? <Dropdown toggleDropdown={toggleDropdown} posX={dropdown.posX} posY={dropdown.posY} file={dropdown.file}/> : null}
+      {dropdown.toggled ? <Dropdown downloadFile={props.downloadFile} deleteFile={props.deleteFile} toggleDropdown={toggleDropdown} posX={dropdown.posX} posY={dropdown.posY} file={dropdown.file} renameFileFunc={props.renameFileFunc}/> : null}
     </section>
   )
 }
