@@ -71,7 +71,7 @@ const Content = (props) => {
           </thead>
           <tbody>
             {props.currentFolder.map((file) => {
-              console.log(file);
+              {/* console.log(file); */}
               return (
                 <tr className={styles['content__table-row']} key={file.id}>
                   <td className={styles['content__table-td']}><i className="material-icons" onClick={() => addFavorite(file)}>star</i></td>

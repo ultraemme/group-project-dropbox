@@ -6,6 +6,9 @@ import { Link } from 'react-router-dom';
 const Header = (props) => {
   const pathArr = props.currentPath.pathname.substr(1).split('/');
   let currentDir = "";
+
+
+
   return (
     <header className={styles.header}>
       {<div className={styles.header__container}>
@@ -29,7 +32,7 @@ const Header = (props) => {
           <label htmlFor="search">
             <i className={`material-icons ${styles['header__search-icon']}`}>search</i>
           </label>
-          <input onChange={props.searchFile} className={styles['header__search-input']} type="text" name="search" placeholder="Search..." />
+          <input onChange={props.searchFile} value={props.value} className={styles['header__search-input']} type="text" name="search" placeholder="Search..." />
         </form>
       </div>
     </header>
