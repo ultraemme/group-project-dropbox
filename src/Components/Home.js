@@ -28,6 +28,22 @@ const Home = (props) => {
     updateToken(null);
   }
 
+  function deleteFile(file) {
+    //trigger dialog
+    const dbx = new Dropbox({ accessToken: token$.value, fetch });
+    dbx.filesDeleteV2({ path: file.path_lower })
+      .then(res => {
+        console.log(res);
+        let newFolder = currentFolder.filter((t) => {
+          return file !== t;
+        })
+        setCurrentFolder(newFolder);
+      })
+      .catch(err => {
+        console.error(err);
+      })
+  }
+
   function formatPath() {
     //takes currentPath, returns formatted path to pass to header
   }
@@ -182,7 +198,7 @@ const Home = (props) => {
             </div>
             <div className={styles['home__right-container']}>
               <Header currentPath={props.location} searchFile={searchFile} value={searchValue} />
-              <Content currentFolder={currentFolder} currentPath={currentPath} downloadFile={downloadFileRequest} />
+              <Content currentFolder={currentFolder} currentPath={currentPath} downloadFile={downloadFileRequest} deleteFile={deleteFile} />
             </div>
           </div>
       }
