@@ -23,42 +23,18 @@ const Home = (props) => {
   const [redirectLogout, setRedirectLogout] = useState(false);
   const [didMount, setDidMount] = useState(false);
   const [user, setUser] = useState({});
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState();
   const [searchFileObj, setSearchFileObj] = useState();
 
-  function signOut() {
+  function signOut () {
     setRedirectLogout(true);
     updateToken(null);
   }
 
-  function deleteFile(file) {
-    //trigger dialog
-    const dbx = new Dropbox({ accessToken: token$.value, fetch });
-    dbx.filesDeleteV2({ path: file.path_lower })
-      .then(res => {
-        console.log(res);
-        let newFolder = currentFolder.filter((t) => {
-          return file !== t;
-        })
-        setCurrentFolder(newFolder);
-      })
-      .catch(err => {
-        console.error(err);
-      })
+  function formatPath () {
+    //takes currentPath, returns formatted path to pass to header
   }
 
-<<<<<<< HEAD
-  function downloadFileRequest(fileName, filePath) {
-    const dbx = new Dropbox({ accessToken: token$.value, fetch });
-    dbx.filesDownload({ path: filePath })
-      .then((res) => {
-        let url = URL.createObjectURL(res.fileBlob);
-        let downloadButton = document.createElement('a');
-        downloadButton.setAttribute('href', url);
-        downloadButton.setAttribute('download', res.name);
-        downloadButton.click();
-      })
-=======
   function renameFileDialog(file){
     let fileData = {
       fileName: file.name,
@@ -91,7 +67,6 @@ const Home = (props) => {
           setCurrentFolder(res.entries);
           setRenameFile(false);
         })
-
     })
   }
 
@@ -105,52 +80,51 @@ const Home = (props) => {
       downloadButton.setAttribute('download', res.name);
       downloadButton.click();
     })
->>>>>>> renamefile
   }
 
-  function uploadFileRequest(files) {
-    if (!files.length) return;
-    if (files[0].size < 150000000) {
+  function uploadFileRequest(files){
+    if(!files.length) return;
+    if(files[0].size < 150000000){
       console.log('The size is lower than 150 MB')
-      const dbx = new Dropbox({ accessToken: token$.value, fetch });
-      dbx.filesUpload({ contents: files[0], path: `${currentPath}/${files[0].name}`, mode: 'add', autorename: true, mute: false, strict_conflict: false })
+      const dbx = new Dropbox({accessToken: token$.value, fetch});
+      dbx.filesUpload({contents: files[0], path: `${currentPath}/${files[0].name}`, mode: 'add', autorename: true, mute: false, strict_conflict: false})
+      .then((res) => {
+        const dbx = new Dropbox({accessToken: token$.value, fetch});
+        dbx.filesListFolder({path: currentPath})
+          .then(res => {
+            setCurrentFolder(res.entries);
+            setUploadFile(false);
+          })
+      })
+    }
+    else{
+      console.log('The size is HIGHER than 150 MB');
+      const dbx = new Dropbox({accessToken: token$.value, fetch});
+      dbx.filesUploadSessionStart({contents: files[0], close: false})
+      .then((res) => {
+        const dbx = new Dropbox({accessToken: token$.value, fetch});
+        dbx.filesUploadSessionFinish({
+          cursor: {
+            session_id: res.session_id,
+            offset: files[0].size,
+          },
+          commit: {
+            path: `${currentPath}/${files[0].name}`,
+            mode: 'add',
+            autorename: true,
+            mute: false,
+            strict_conflict: false,
+          }
+        })
         .then((res) => {
-          const dbx = new Dropbox({ accessToken: token$.value, fetch });
-          dbx.filesListFolder({ path: currentPath })
+          const dbx = new Dropbox({accessToken: token$.value, fetch});
+          dbx.filesListFolder({path: currentPath})
             .then(res => {
               setCurrentFolder(res.entries);
               setUploadFile(false);
             })
         })
-    }
-    else {
-      console.log('The size is HIGHER than 150 MB');
-      const dbx = new Dropbox({ accessToken: token$.value, fetch });
-      dbx.filesUploadSessionStart({ contents: files[0], close: false })
-        .then((res) => {
-          const dbx = new Dropbox({ accessToken: token$.value, fetch });
-          dbx.filesUploadSessionFinish({
-            cursor: {
-              session_id: res.session_id,
-              offset: files[0].size,
-            },
-            commit: {
-              path: `${currentPath}/${files[0].name}`,
-              mode: 'add',
-              autorename: true,
-              mute: false,
-              strict_conflict: false,
-            }
-          })
-            .then((res) => {
-              const dbx = new Dropbox({ accessToken: token$.value, fetch });
-              dbx.filesListFolder({ path: currentPath })
-                .then(res => {
-                  setCurrentFolder(res.entries);
-                  setUploadFile(false);
-                })
-            })
-        })
+      })
     }
   }
 
@@ -160,99 +134,78 @@ const Home = (props) => {
 
     if (!token$.value) {
       axios.post(API)
-        .then((res) => {
-          console.log(res);
-          updateToken(res.data.access_token);
-          setDidMount(true);
-        })
-        .catch(err => {
-          console.log(err.response.data)
-          setRedirectLogout(true);
-        })
+      .then((res) => {
+        console.log(res);
+        updateToken(res.data.access_token);
+        setDidMount(true);
+      })
+      .catch(err => {
+        console.log(err.response.data)
+        setRedirectLogout(true);
+      })
     }
-    else {
+    else{
       setDidMount(true);
     }
   }, []);
 
   useEffect(() => {
-    if (didMount) {
-      const dbx = new Dropbox({ accessToken: token$.value, fetch });
+    if(didMount){
+      const dbx = new Dropbox({accessToken: token$.value, fetch});
       dbx.usersGetCurrentAccount()
-        .then((res) => {
-          console.log(res);
-          let user = {
-            display_name: res.name.display_name,
-            email: res.email,
-          }
-          setUser(user);
-        })
+      .then((res) => {
+        console.log(res);
+        let user = {
+          display_name: res.name.display_name,
+          email: res.email,
+        }
+        setUser(user);
+      })
       // const dbx = new Dropbox({accessToken: token$.value, fetch});
-      dbx.filesListFolder({ path: currentPath })
-        .then(res => {
-          setCurrentFolder(res.entries);
-        })
+      dbx.filesListFolder({path: currentPath})
+      .then(res => {
+        console.log(res);
+        setCurrentFolder(res.entries);
+      })
     }
   }, [didMount]);
 
   useEffect(() => {
     if (didMount) {
-      const dbx = new Dropbox({ accessToken: token$.value, fetch });
-      dbx.filesListFolder({ path: currentPath })
+      const dbx = new Dropbox({accessToken: token$.value, fetch});
+      dbx.filesListFolder({path: currentPath})
         .then(res => {
           setCurrentFolder(res.entries);
         })
     }
   }, [currentPath, newFolder]);
-  
-  useEffect(() => {
-    if (!searchValue) {
-      const dbx = new Dropbox({ accessToken: token$.value, fetch });
-      dbx.filesListFolder({ path: currentPath })
-        .then(res => {
-          setCurrentFolder(res.entries);
-        })
-    }
-    else {
-      const dbx = new Dropbox({ accessToken: token$.value, fetch });
-      dbx.filesSearch({
-        path: currentPath,
-        query: searchValue,
+
+  function searchFile (e) {
+    const dbx = new Dropbox({accessToken: token$.value, fetch});
+    dbx.filesSearch({
+      path: "",
+      query: e.target.value,
+    })
+    .then(res =>{
+      const value = res.matches.map(file =>{
+        return file.metadata
       })
-        .then(res => {
-          let value = res.matches.map(file => {
-            return file.metadata
-          })
-          console.log(value);
-          setSearchFileObj(value)
-        })
-        .then(() => {
-          setCurrentFolder(searchFileObj);
-        })
-    }
-  }, [searchValue])
-
-  function searchFile(e) {
-    setSearchValue(e.target.value);
+     setSearchFileObj(value)
+     console.log(searchFileObj);
+    })
+    .then(()=>{
+      setCurrentFolder(searchFileObj);
+    })
   }
-
   return (
     <>
       {
-        redirectLogout ? <Redirect to="/" /> :
+        redirectLogout ? <Redirect to="/"/> :
           <div className={styles.home}>
             <div className={styles['home__left-container']}>
-              <Navigation newFile={() => setNewFolder(true)} uploadFile={() => setUploadFile(true)} signOut={signOut} user={user} />
+              <Navigation newFile={() => setNewFolder(true)} uploadFile={() => setUploadFile(true)} signOut={signOut} user={user}/>
             </div>
             <div className={styles['home__right-container']}>
-<<<<<<< HEAD
-              <Header currentPath={props.location} searchFile={searchFile} value={searchValue} />
-              <Content currentFolder={currentFolder} currentPath={currentPath} downloadFile={downloadFileRequest} deleteFile={deleteFile} />
-            </div>
-          </div>
-      }
-      {uploadFile ? <UploadFile closeClick={() => setUploadFile(false)} uploadFileRequest={uploadFileRequest} /> : null}
-=======
               <Header currentPath={props.location} searchFile={searchFile}/>
               <Content currentFolder={currentFolder} currentPath={currentPath} downloadFile={downloadFileRequest} renameFileFunc={renameFileDialog}/>
             </div>
@@ -260,7 +213,6 @@ const Home = (props) => {
       }
       {renameFile ? <RenameFile fileData={renameFileData} onRenameFileChange={onRenameFileChange} renameFileRequest={renameFileRequest}/> : null}
       {uploadFile ? <UploadFile closeClick={() => setUploadFile(false)} uploadFileRequest={uploadFileRequest}/> : null}
->>>>>>> renamefile
       {newFolder === true ? <Dialog currentPath={currentPath} exitDialog={() => setNewFolder(false)} /> : null}
     </>
   )
