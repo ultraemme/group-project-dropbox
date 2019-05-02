@@ -144,17 +144,20 @@ const Home = (props) => {
   }, [currentPath, newFolder]);
 
   function searchFile (e) {
-    setSearchValue(e.target.value)
     const dbx = new Dropbox({accessToken: token$.value, fetch});
     dbx.filesSearch({
       path: "",
-      query: searchValue,
+      query: e.target.value,
     })
     .then(res =>{
       const value = res.matches.map(file =>{
         return file.metadata
       })
-     console.log (value)
+     setSearchFileObj(value)
+     console.log(searchFileObj);
+    })
+    .then(()=>{
+      setCurrentFolder(searchFileObj);
     })
   }
   return (
