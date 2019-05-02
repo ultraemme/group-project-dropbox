@@ -24,6 +24,14 @@ const Header = (props) => {
       </div>
 
       }
+      <div className={styles.header__search}>
+        <form className={styles['header__search-form']} >
+          <label htmlFor="search">
+            <i className={`material-icons ${styles['header__search-icon']}`}>search</i>
+          </label>
+          <input onChange={props.searchFile} className={styles['header__search-input']} type="text" name="search" placeholder="Search..." />
+        </form>
+      </div>
     </header>
   )
 }

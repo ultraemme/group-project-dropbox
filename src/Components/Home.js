@@ -20,6 +20,8 @@ const Home = (props) => {
   const [redirectLogout, setRedirectLogout] = useState(false);
   const [didMount, setDidMount] = useState(false);
   const [user, setUser] = useState({});
+  const [searchValue, setSearchValue] = useState();
+  const [searchFileObj, setSearchFileObj] = useState();
 
   function signOut () {
     setRedirectLogout(true);
@@ -129,6 +131,20 @@ const Home = (props) => {
     }
   }, [currentPath, newFolder]);
 
+  function searchFile (e) {
+    setSearchValue(e.target.value)
+    const dbx = new Dropbox({accessToken: token$.value, fetch});
+    dbx.filesSearch({ 
+      path: "",
+      query: searchValue,
+    })
+    .then(res =>{
+      const value = res.matches.map(file =>{
+        return file.metadata
+      })
+     console.log (value)
+    })
+  }
   return (
     <>
       {
@@ -138,7 +154,7 @@ const Home = (props) => {
               <Navigation newFile={() => setNewFolder(true)} uploadFile={() => setUploadFile(true)} signOut={signOut} user={user}/>
             </div>
             <div className={styles['home__right-container']}>
-              <Header currentPath={props.location}/>
+              <Header currentPath={props.location} searchFile={searchFile}/>
               <Content currentFolder={currentFolder} currentPath={currentPath}/>
             </div>
           </div>
