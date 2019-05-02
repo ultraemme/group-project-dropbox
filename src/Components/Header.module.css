@@ -21,7 +21,7 @@
 .header__link-arrow{
   font-size: 2rem;
 }
-.header__container .header__link:nth-last-child(2){
+.header__row:nth-last-child(1) .header__link:nth-last-child(2){
   color: #E91E63;
   animation: shake 0.4s ease-in;
 }
@@ -39,6 +39,6 @@
     transform: translate(0, 0);
   }
 }
-.header__container .header__link-arrow:nth-last-child(1){
+.header__row:nth-last-child(1) .header__link-arrow:nth-last-child(1){
   display: none;
 }

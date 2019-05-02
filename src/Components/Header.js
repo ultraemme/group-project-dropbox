@@ -13,10 +13,10 @@ const Header = (props) => {
           pathArr.map((path) => {
             currentDir += `/${path}`;
             return (
-              <>
-                <Link key={path} className={styles['header__link']} to={currentDir}>{path}</Link>
+              <div key={path} className={styles.header__row} >
+                <Link className={styles['header__link']} to={currentDir}>{path}</Link>
                 <span className={styles['header__link-arrow']}> > </span>
-              </>
+              </div>
             )
           })
         }
