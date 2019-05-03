@@ -27,7 +27,6 @@ const Home = (props) => {
   const [didMount, setDidMount] = useState(false);
   const [user, setUser] = useState({});
   const [searchValue, setSearchValue] = useState();
-  const [searchFileObj, setSearchFileObj] = useState();
 
   function signOut() {
     setRedirectLogout(true);
@@ -233,18 +232,17 @@ const Home = (props) => {
           let value = res.matches.map(file => {
             return file.metadata
           })
-          setSearchFileObj(value)
-        })
-        .then(() => {
-          setCurrentFolder(searchFileObj);
+          setCurrentFolder(value);
         })
     }
   }, [searchValue])
 
   function searchFile (e) {
     setSearchValue(e.target.value)
-
   }
+
+
+  
   return (
     <>
       {

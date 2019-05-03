@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './Navigation.module.css';
 import logo from '../lockbox_logo.svg';
+import { Link } from 'react-router-dom';
 
 const Navigation = (props) => {
 
@@ -19,13 +20,13 @@ const Navigation = (props) => {
       <div className={styles['nav__btns-container']}>
         <ul className={styles['nav__ul']}>
           <li>
-            <button>Files</button>
+            <Link to="/home">Files</Link>
           </li>
           <li>
-            <button>Favorites</button>
+            <Link to="/favorites">Favorites</Link>
           </li>
           <li>
-            <button>About us</button>
+            <Link to="/aboutus">About us</Link>
           </li>
         </ul>
         <span className={styles['nav__line']}></span>

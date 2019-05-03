@@ -81,3 +81,9 @@
   color: #E91E63;
   cursor: pointer;
 }
+.nav__btns-container a{
+  font-size:1.6rem;
+  text-decoration: none;
+  color: #E91E63;
+  cursor: pointer;
+}
