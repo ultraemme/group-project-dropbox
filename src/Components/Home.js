@@ -104,16 +104,30 @@ const Home = (props) => {
     })
   }
 
-  function downloadFileRequest(fileName, filePath){
-    const dbx = new Dropbox({accessToken: token$.value, fetch});
-    dbx.filesDownload({path: filePath})
-    .then((res) => {
-      let url = URL.createObjectURL(res.fileBlob);
-      let downloadButton = document.createElement('a');
-      downloadButton.setAttribute('href', url);
-      downloadButton.setAttribute('download', res.name);
-      downloadButton.click();
-    })
+  function downloadFileRequest(fileName, filePath,folder){
+    let type = folder['.tag'];
+    if (type === "folder"){
+      const dbx = new Dropbox({accessToken: token$.value, fetch});
+      dbx.filesDownloadZip({path: filePath})
+      .then((res) => {
+        let url = URL.createObjectURL(res.fileBlob);
+        let downloadButton = document.createElement('a');
+        downloadButton.setAttribute('href', url);
+        downloadButton.setAttribute('download', res.name);
+        downloadButton.click();
+      })
+
+    }else {
+      const dbx = new Dropbox({accessToken: token$.value, fetch});
+      dbx.filesDownload({path: filePath})
+      .then((res) => {
+        let url = URL.createObjectURL(res.fileBlob);
+        let downloadButton = document.createElement('a');
+        downloadButton.setAttribute('href', url);
+        downloadButton.setAttribute('download', res.name);
+        downloadButton.click();
+      })
+    }
   }
 
   function uploadFileRequest(files){
@@ -240,9 +254,6 @@ const Home = (props) => {
   function searchFile (e) {
     setSearchValue(e.target.value)
   }
-
-
-  
   return (
     <>
       {
