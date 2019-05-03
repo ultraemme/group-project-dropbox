@@ -76,3 +76,15 @@
 .rename-form__submit-btn:hover{
   opacity: 0.9;
 }
+.rename-container__close-btn{
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: #D2D5D9;
+  cursor: pointer;
+  font-size: 1.8rem;
+  margin: 10px 10px 0 0;
+}
+.rename-container__close-btn:hover{
+  color: #555;
+}
