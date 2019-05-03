@@ -10,6 +10,7 @@ import styles from './Home.module.css';
 import Dialog from './Dialog';
 import UploadFile from './UploadFile';
 import RenameFile from './RenameFile';
+import MoveFile from './MoveFile';
 
 const Home = (props) => {
   // console.log("HEJ", props.location);
@@ -18,6 +19,8 @@ const Home = (props) => {
   const [uploadFile, setUploadFile] = useState(false);
   const [renameFile, setRenameFile] = useState(false);
   const [renameFileData, setRenameFileData] = useState({});
+  const [moveFile, setMoveFile] = useState(false);
+  const [moveFileData, setmoveFileData] = useState({})
   const [newFolder, setNewFolder] = useState(false);
   const [currentFolder, setCurrentFolder] = useState([]);
   const [redirectLogout, setRedirectLogout] = useState(false);
@@ -47,6 +50,26 @@ const Home = (props) => {
       })
   }
 
+  function moveFileDialog(file){
+    setmoveFileData(file)
+    setMoveFile(true);
+  }
+  function moveFileRequest(file, toPath){
+    const dbx = new Dropbox({accessToken: token$.value, fetch});
+    dbx.filesMoveV2({
+      from_path: file.path_lower,
+      to_path: `${toPath}/${file.name}`,
+    })
+    .then((res) => {
+      console.log(res);
+      const dbx = new Dropbox({accessToken: token$.value, fetch});
+      dbx.filesListFolder({path: currentPath})
+        .then(res => {
+          setCurrentFolder(res.entries);
+          setMoveFile(false);
+        })
+    })
+  }
   function renameFileDialog(file){
     let fileData = {
       fileName: file.name,
@@ -232,10 +255,11 @@ const Home = (props) => {
             </div>
             <div className={styles['home__right-container']}>
               <Header currentPath={props.location} searchFile={searchFile} value={searchValue}/>
-              <Content currentFolder={currentFolder} currentPath={currentPath} downloadFile={downloadFileRequest} renameFileFunc={renameFileDialog} deleteFile={deleteFile}/>
+              <Content currentFolder={currentFolder} currentPath={currentPath} downloadFile={downloadFileRequest} renameFileFunc={renameFileDialog} deleteFile={deleteFile} moveFileFunc={moveFileDialog}/>
             </div>
           </div>
       }
+      {moveFile ? <MoveFile closeMoveFile={() => setMoveFile(false)} moveFileRequest={moveFileRequest} selectedFile={moveFileData}/> : null}
       {renameFile ? <RenameFile fileData={renameFileData} onRenameFileChange={onRenameFileChange} renameFileRequest={renameFileRequest} closeRenameFile={() => setRenameFile(false)}/> : null}
       {uploadFile ? <UploadFile closeClick={() => setUploadFile(false)} uploadFileRequest={uploadFileRequest}/> : null}
       {newFolder === true ? <Dialog currentPath={currentPath} exitDialog={() => setNewFolder(false)} /> : null}

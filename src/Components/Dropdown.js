@@ -11,6 +11,10 @@ const Dropdown = (props) => {
     props.toggleDropdown();
     props.renameFileFunc(props.file);
   }
+  function moveFile(e){
+    props.toggleDropdown();
+    props.moveFileFunc(props.file);
+  }
   return (
     <div onMouseLeave={props.toggleDropdown} className={styles.dropdown} style={{top: props.posY-10, left: props.posX-10}}>
       <ul className={styles.dropdown__list}>
@@ -30,7 +34,7 @@ const Dropdown = (props) => {
           <span className={`${styles['dropdown__list-icon']} material-icons`}>file_copy</span>
           <span className={styles['dropdown__list-label']}>Copy</span>
         </li>
-        <li key={"move"} className={styles['dropdown__list-item']}>
+        <li key={"move"} className={styles['dropdown__list-item']} onClick={moveFile}>
           <span className={`${styles['dropdown__list-icon']} material-icons`}>exit_to_app</span>
           <span className={styles['dropdown__list-label']}>Move</span>
         </li>
