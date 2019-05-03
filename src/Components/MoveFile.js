@@ -3,12 +3,13 @@ import styles from './MoveFile.module.css';
 import { Dropbox } from 'dropbox';
 import { token$ } from '../Store';
 
-function formatFromPath(){
-
+function formatFromPath(path){
+  let pathSplit = path.split('/');
+  pathSplit.pop();
+  let rv = pathSplit.join(' > ');
+  return rv;
 }
-
 function formatToPath(path){
-  console.log(path);
   if(path === 'Home/'){
     return 'Home';
   }
@@ -16,7 +17,6 @@ function formatToPath(path){
   let rv = pathSplit.join(' > ');
   return rv;
 }
-
 const MoveFile = (props) => {
   const [folderList, setFolderList] = useState([]);
   const [selectedPath, setSelectedPath] = useState('');
