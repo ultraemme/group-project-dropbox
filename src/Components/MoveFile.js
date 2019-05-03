@@ -5,7 +5,6 @@ import { token$ } from '../Store';
 
 function formatPath(path){
   let pathSplit = path.split('/');
-  pathSplit.shift();
   let rv = pathSplit.join(' > ');
   return rv;
 }
@@ -42,8 +41,8 @@ const MoveFile = (props) => {
           <h4 className={styles['move-container__title']}>Move File</h4>
         </span>
         <div className={styles['move-container__path-wrapper']}>
-          <label className={styles['path-wrapper__path-label']}>From: <span className={styles['path-wrapper__path-text']}>{formatPath(props.selectedFile.path_display)}</span></label>
-          <label className={styles['path-wrapper__path-label']}>To: <span className={styles['path-wrapper__path-text']}>{formatPath(selectedPath)}</span></label>
+          <label className={styles['path-wrapper__path-label']}>From: <span className={styles['path-wrapper__path-text']}>{formatPath(`Home${props.selectedFile.path_display}`)}</span></label>
+          <label className={styles['path-wrapper__path-label']}>To: <span className={styles['path-wrapper__path-text']}>{formatPath(`Home${selectedPath}`)}</span></label>
         </div>
         <div className={styles['move-form__folder-container']}>
           {
