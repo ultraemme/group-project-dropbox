@@ -45,6 +45,10 @@ const MoveFile = (props) => {
           <label className={styles['path-wrapper__path-label']}>To: <span className={styles['path-wrapper__path-text']}>{formatPath(`Home${selectedPath}`)}</span></label>
         </div>
         <div className={styles['move-form__folder-container']}>
+          <div className={styles['move-form__folder-wrapper']}>
+            <input className={styles['move-form__folder-radio']} type='radio' name='folder' value='' onChange={onChangeTest}/>
+            <span className={styles['move-form__folder-checkmark']}><i className={`material-icons ${styles['move-form__folder-icon']}`}>folder</i>Home</span>
+          </div>
           {
             folderList.map((folder) => {
               return (
