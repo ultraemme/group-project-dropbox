@@ -68,6 +68,10 @@ const Home = (props) => {
           setMoveFile(false);
         })
     })
+    .catch((err) => {
+      console.log(err);
+      setMoveFile(false);
+    })
   }
   function renameFileDialog(file){
     let fileData = {
@@ -254,6 +258,12 @@ const Home = (props) => {
   function searchFile (e) {
     setSearchValue(e.target.value)
   }
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> 6441158519643615b8f49abcc6db53769eac8053
   return (
     <>
       {

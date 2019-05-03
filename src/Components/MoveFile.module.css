@@ -56,6 +56,7 @@
 .path-wrapper__path-text{
   font-size: 1.6rem;
   color: #424242;
+  word-wrap: break-word;
 }
 .move-form__folder-container{
   width: 100%;
