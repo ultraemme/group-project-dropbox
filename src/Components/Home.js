@@ -54,6 +54,12 @@ const Home = (props) => {
     setMoveFile(true);
   }
   function moveFileRequest(file, toPath){
+    if(toPath === '/'){
+      toPath = '';
+    }
+    else if(!toPath){
+      return;
+    }
     const dbx = new Dropbox({accessToken: token$.value, fetch});
     dbx.filesMoveV2({
       from_path: file.path_lower,

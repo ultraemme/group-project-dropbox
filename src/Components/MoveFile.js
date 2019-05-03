@@ -3,7 +3,15 @@ import styles from './MoveFile.module.css';
 import { Dropbox } from 'dropbox';
 import { token$ } from '../Store';
 
-function formatPath(path){
+function formatFromPath(){
+
+}
+
+function formatToPath(path){
+  console.log(path);
+  if(path === 'Home/'){
+    return 'Home';
+  }
   let pathSplit = path.split('/');
   let rv = pathSplit.join(' > ');
   return rv;
@@ -41,12 +49,12 @@ const MoveFile = (props) => {
           <h4 className={styles['move-container__title']}>Move File</h4>
         </span>
         <div className={styles['move-container__path-wrapper']}>
-          <label className={styles['path-wrapper__path-label']}>From: <span className={styles['path-wrapper__path-text']}>{formatPath(`Home${props.selectedFile.path_display}`)}</span></label>
-          <label className={styles['path-wrapper__path-label']}>To: <span className={styles['path-wrapper__path-text']}>{formatPath(`Home${selectedPath}`)}</span></label>
+          <label className={styles['path-wrapper__path-label']}>From: <span className={styles['path-wrapper__path-text']}>{formatFromPath(`Home${props.selectedFile.path_display}`)}</span></label>
+          <label className={styles['path-wrapper__path-label']}>To: <span className={styles['path-wrapper__path-text']}>{formatToPath(`Home${selectedPath}`)}</span></label>
         </div>
         <div className={styles['move-form__folder-container']}>
           <div className={styles['move-form__folder-wrapper']}>
-            <input className={styles['move-form__folder-radio']} type='radio' name='folder' value='' onChange={onChangeTest}/>
+            <input className={styles['move-form__folder-radio']} type='radio' name='folder' value='/' onChange={onChangeTest} />
             <span className={styles['move-form__folder-checkmark']}><i className={`material-icons ${styles['move-form__folder-icon']}`}>folder</i>Home</span>
           </div>
           {
