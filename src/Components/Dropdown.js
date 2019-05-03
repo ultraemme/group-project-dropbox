@@ -22,7 +22,7 @@ const Dropdown = (props) => {
           <span className={`${styles['dropdown__list-icon']} material-icons`}>star</span>
           <span className={styles['dropdown__list-label']}>Add to favorites</span>
         </li>
-        <li key={"download"} onClick={() => props.downloadFile(props.file.name, props.file.path_display)} className={styles['dropdown__list-item']}>
+        <li key={"download"} onClick={() => props.downloadFile(props.file.name, props.file.path_display, props.file)} className={styles['dropdown__list-item']}>
           <span className={`${styles['dropdown__list-icon']} material-icons`}>arrow_downward</span>
           <span className={styles['dropdown__list-label']}>Download</span>
         </li>

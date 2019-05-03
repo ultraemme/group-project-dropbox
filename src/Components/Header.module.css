@@ -67,7 +67,8 @@
   border-width: 0;
   color: #000;
   outline: none;
-  border-radius: 25px
+  border-radius: 25px;
+  border-bottom: 1px groove ;
 }
 .header__search-icon{
   font-size: 2.0rem;
