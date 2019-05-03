@@ -10,11 +10,16 @@ function formatFromPath(path){
   return rv;
 }
 function formatToPath(path){
-  if(path === 'Home/'){
+  console.log(path);
+  if(path === '/'){
     return 'Home';
+  }
+  else if(!path){
+    return '';
   }
   let pathSplit = path.split('/');
   let rv = pathSplit.join(' > ');
+  rv = 'Home ' + rv;
   return rv;
 }
 const MoveFile = (props) => {
@@ -50,7 +55,7 @@ const MoveFile = (props) => {
         </span>
         <div className={styles['move-container__path-wrapper']}>
           <label className={styles['path-wrapper__path-label']}>From: <span className={styles['path-wrapper__path-text']}>{formatFromPath(`Home${props.selectedFile.path_display}`)}</span></label>
-          <label className={styles['path-wrapper__path-label']}>To: <span className={styles['path-wrapper__path-text']}>{formatToPath(`Home${selectedPath}`)}</span></label>
+          <label className={styles['path-wrapper__path-label']}>To: <span className={styles['path-wrapper__path-text']}>{formatToPath(`${selectedPath}`)}</span></label>
         </div>
         <div className={styles['move-form__folder-container']}>
           <div className={styles['move-form__folder-wrapper']}>
