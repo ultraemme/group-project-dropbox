@@ -3,9 +3,17 @@ import styles from './Dropdown.module.css';
 
 const Dropdown = (props) => {
 
-
   function logFile (file) { //temporary
     console.log(file);
+  }
+
+  function deleteFile() {
+    props.toggleDropdown();
+    props.deleteFile(props.file);
+  }
+  function downloadFile() {
+    props.toggleDropdown();
+    props.downloadFile(props.file.name, props.file.path_display, props.file);
   }
   function renameFile(e){
     props.toggleDropdown();
@@ -22,7 +30,7 @@ const Dropdown = (props) => {
           <span className={`${styles['dropdown__list-icon']} material-icons`}>star</span>
           <span className={styles['dropdown__list-label']}>Add to favorites</span>
         </li>
-        <li key={"download"} onClick={() => props.downloadFile(props.file.name, props.file.path_display, props.file)} className={styles['dropdown__list-item']}>
+        <li key={"download"} onClick={downloadFile} className={styles['dropdown__list-item']}>
           <span className={`${styles['dropdown__list-icon']} material-icons`}>arrow_downward</span>
           <span className={styles['dropdown__list-label']}>Download</span>
         </li>
@@ -38,7 +46,7 @@ const Dropdown = (props) => {
           <span className={`${styles['dropdown__list-icon']} material-icons`}>exit_to_app</span>
           <span className={styles['dropdown__list-label']}>Move</span>
         </li>
-        <li key={"delete"} onClick={() => props.deleteFile(props.file)} className={styles['dropdown__list-item']}>
+        <li key={"delete"} onClick={deleteFile} className={styles['dropdown__list-item']}>
           <span className={`${styles['dropdown__list-icon']} material-icons`}>delete</span>
           <span className={styles['dropdown__list-label']}>Delete</span>
         </li>
