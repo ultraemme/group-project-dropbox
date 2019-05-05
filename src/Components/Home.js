@@ -12,6 +12,7 @@ import UploadFile from './UploadFile';
 import RenameFile from './RenameFile';
 import MoveFile from './MoveFile';
 import DeleteFile from './DeleteFile';
+import CopyFile from './CopyFile';
 
 const Home = (props) => {
   // console.log("HEJ", props.location);
@@ -30,6 +31,8 @@ const Home = (props) => {
   const [searchValue, setSearchValue] = useState();
   const [deleteFile, setDeleteFile] = useState(false);
   const [deleteFileData, setDeleteFileData] = useState({});
+  const [copyFile, setCopyFile] = useState(false);
+  const [copyFileData, setCopyFileData] = useState({})
 
   function signOut() {
     setRedirectLogout(true);
@@ -61,6 +64,37 @@ const Home = (props) => {
     setmoveFileData(file)
     setMoveFile(true);
   }
+
+  function copyFileDialog (file) {
+    setCopyFileData(file)
+    setCopyFile(true);
+  }
+
+  function copyFileRequest (file, toPath) {
+    toPath = (toPath === "/") ? "" : toPath;
+    const dbx = new Dropbox({accessToken: token$.value, fetch});
+    dbx.filesCopyV2({
+      from_path: file.path_lower,
+      to_path: `${toPath}/${file.name}`,
+      autorename: true,
+    })
+      .then(res => {
+        const dbx = new Dropbox({accessToken: token$.value, fetch});
+        dbx.filesListFolder({path: currentPath})
+          .then(res => {
+            console.log("refresh");
+            setCurrentFolder(res.entries);
+            setCopyFile(false);
+          })
+          .catch(err => {
+            console.error(err);
+          })
+      })
+      .catch(err => {
+        console.error(err);
+      })
+  }
+
   function moveFileRequest(file, toPath){
     if(toPath === '/'){
       toPath = '';
@@ -69,6 +103,7 @@ const Home = (props) => {
       return;
     }
     const dbx = new Dropbox({accessToken: token$.value, fetch});
+    console.log(`${toPath}/${file.name}`);
     dbx.filesMoveV2({
       from_path: file.path_lower,
       to_path: `${toPath}/${file.name}`,
@@ -282,11 +317,12 @@ const Home = (props) => {
             </div>
             <div className={styles['home__right-container']}>
               <Header currentPath={props.location} searchFile={searchFile} value={searchValue}/>
-              <Content currentFolder={currentFolder} currentPath={currentPath} downloadFile={downloadFileRequest} renameFileFunc={renameFileDialog} deleteFile={deleteFileDialog} moveFileFunc={moveFileDialog}/>
+              <Content currentFolder={currentFolder} currentPath={currentPath} copyFile={copyFileDialog} downloadFile={downloadFileRequest} renameFileFunc={renameFileDialog} deleteFile={deleteFileDialog} moveFileFunc={moveFileDialog}/>
             </div>
           </div>
       }
       {moveFile ? <MoveFile closeMoveFile={() => setMoveFile(false)} moveFileRequest={moveFileRequest} selectedFile={moveFileData}/> : null}
+      {copyFile ? <CopyFile closeCopyFile={() => setCopyFile(false)} copyFileRequest={copyFileRequest} selectedFile={copyFileData}/> : null}
       {renameFile ? <RenameFile fileData={renameFileData} onRenameFileChange={onRenameFileChange} renameFileRequest={renameFileRequest} closeRenameFile={() => setRenameFile(false)}/> : null}
       {uploadFile ? <UploadFile closeClick={() => setUploadFile(false)} uploadFileRequest={uploadFileRequest}/> : null}
       {newFolder === true ? <Dialog currentPath={currentPath} exitDialog={() => setNewFolder(false)} /> : null}
