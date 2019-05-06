@@ -23,10 +23,10 @@ const Navigation = (props) => {
             <Link to="/home">Files</Link>
           </li>
           <li>
-            <Link to="/favorites">Favorites</Link>
+            <Link to="/home/favorites">Favorites</Link>
           </li>
           <li>
-            <Link to="/aboutus">About us</Link>
+            <Link to="/home/about">About us</Link>
           </li>
         </ul>
         <span className={styles['nav__line']}></span>
