@@ -157,9 +157,8 @@ const Home = (props) => {
     })
   }
 
-  function downloadFileRequest(fileName, filePath,folder){
-    let type = folder['.tag'];
-    if (type === "folder"){
+  function downloadFileRequest(fileName, filePath, tag){
+    if (tag === "folder"){
       const dbx = new Dropbox({accessToken: token$.value, fetch});
       dbx.filesDownloadZip({path: filePath})
       .then((res) => {
@@ -170,7 +169,8 @@ const Home = (props) => {
         downloadButton.click();
       })
 
-    }else {
+    }
+    else {
       const dbx = new Dropbox({accessToken: token$.value, fetch});
       dbx.filesDownload({path: filePath})
       .then((res) => {
@@ -190,12 +190,16 @@ const Home = (props) => {
       const dbx = new Dropbox({accessToken: token$.value, fetch});
       dbx.filesUpload({contents: files[0], path: `${currentPath}/${files[0].name}`, mode: 'add', autorename: true, mute: false, strict_conflict: false})
       .then((res) => {
+        console.log(res);
         const dbx = new Dropbox({accessToken: token$.value, fetch});
         dbx.filesListFolder({path: currentPath})
           .then(res => {
             setCurrentFolder(res.entries);
             setUploadFile(false);
           })
+      })
+      .catch((err) => {
+        console.log(err.response);
       })
     }
     else{

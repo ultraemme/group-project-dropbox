@@ -13,7 +13,7 @@ const Dropdown = (props) => {
   }
   function downloadFile() {
     props.toggleDropdown();
-    props.downloadFile(props.file.name, props.file.path_display, props.file);
+    props.downloadFile(props.file.name, props.file.path_display, props.file['.tag']);
   }
   function renameFile(e){
     props.toggleDropdown();
