@@ -157,8 +157,8 @@ const Home = (props) => {
     })
   }
 
-  function downloadFileRequest(fileName, filePath, folder){
-    if (folder === "folder"){
+  function downloadFileRequest(fileName, filePath, tag){
+    if (tag === "folder"){
       const dbx = new Dropbox({accessToken: token$.value, fetch});
       dbx.filesDownloadZip({path: filePath})
       .then((res) => {
