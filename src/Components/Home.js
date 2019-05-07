@@ -11,8 +11,7 @@ import Dialog from './Dialog';
 import UploadFile from './UploadFile';
 import RenameFile from './RenameFile';
 import MoveFile from './MoveFile';
-import DeleteFile from './DeleteFile';
-import CopyFile from './CopyFile';
+import { useDebounce } from "use-debounce";
 
 const Home = (props) => {
   // console.log("HEJ", props.location);
@@ -29,22 +28,16 @@ const Home = (props) => {
   const [didMount, setDidMount] = useState(false);
   const [user, setUser] = useState({});
   const [searchValue, setSearchValue] = useState();
-  const [deleteFile, setDeleteFile] = useState(false);
-  const [deleteFileData, setDeleteFileData] = useState({});
-  const [copyFile, setCopyFile] = useState(false);
-  const [copyFileData, setCopyFileData] = useState({})
+  const [debouncedQuery] = useDebounce(searchValue, 500);
+
 
   function signOut() {
     setRedirectLogout(true);
     updateToken(null);
   }
 
-  function deleteFileDialog (file) {
-    setDeleteFile(true);
-    setDeleteFileData(file)
-  }
-
-  function deleteFileRequest(file) {
+  function deleteFile(file) {
+    //trigger dialog
     const dbx = new Dropbox({ accessToken: token$.value, fetch });
     dbx.filesDeleteV2({ path: file.path_lower })
       .then(res => {
@@ -52,7 +45,6 @@ const Home = (props) => {
         let newFolder = currentFolder.filter((t) => {
           return file !== t;
         })
-        setDeleteFile(false);
         setCurrentFolder(newFolder);
       })
       .catch(err => {
@@ -64,46 +56,8 @@ const Home = (props) => {
     setmoveFileData(file)
     setMoveFile(true);
   }
-
-  function copyFileDialog (file) {
-    setCopyFileData(file)
-    setCopyFile(true);
-  }
-
-  function copyFileRequest (file, toPath) {
-    toPath = (toPath === "/") ? "" : toPath;
-    const dbx = new Dropbox({accessToken: token$.value, fetch});
-    dbx.filesCopyV2({
-      from_path: file.path_lower,
-      to_path: `${toPath}/${file.name}`,
-      autorename: true,
-    })
-      .then(res => {
-        const dbx = new Dropbox({accessToken: token$.value, fetch});
-        dbx.filesListFolder({path: currentPath})
-          .then(res => {
-            console.log("refresh");
-            setCurrentFolder(res.entries);
-            setCopyFile(false);
-          })
-          .catch(err => {
-            console.error(err);
-          })
-      })
-      .catch(err => {
-        console.error(err);
-      })
-  }
-
   function moveFileRequest(file, toPath){
-    if(toPath === '/'){
-      toPath = '';
-    }
-    else if(!toPath){
-      return;
-    }
     const dbx = new Dropbox({accessToken: token$.value, fetch});
-    console.log(`${toPath}/${file.name}`);
     dbx.filesMoveV2({
       from_path: file.path_lower,
       to_path: `${toPath}/${file.name}`,
@@ -157,8 +111,9 @@ const Home = (props) => {
     })
   }
 
-  function downloadFileRequest(fileName, filePath, tag){
-    if (tag === "folder"){
+  function downloadFileRequest(fileName, filePath,folder){
+    let type = folder['.tag'];
+    if (type === "folder"){
       const dbx = new Dropbox({accessToken: token$.value, fetch});
       dbx.filesDownloadZip({path: filePath})
       .then((res) => {
@@ -169,8 +124,7 @@ const Home = (props) => {
         downloadButton.click();
       })
 
-    }
-    else {
+    }else {
       const dbx = new Dropbox({accessToken: token$.value, fetch});
       dbx.filesDownload({path: filePath})
       .then((res) => {
@@ -190,16 +144,12 @@ const Home = (props) => {
       const dbx = new Dropbox({accessToken: token$.value, fetch});
       dbx.filesUpload({contents: files[0], path: `${currentPath}/${files[0].name}`, mode: 'add', autorename: true, mute: false, strict_conflict: false})
       .then((res) => {
-        console.log(res);
         const dbx = new Dropbox({accessToken: token$.value, fetch});
         dbx.filesListFolder({path: currentPath})
           .then(res => {
             setCurrentFolder(res.entries);
             setUploadFile(false);
           })
-      })
-      .catch((err) => {
-        console.log(err.response);
       })
     }
     else{
@@ -285,6 +235,7 @@ const Home = (props) => {
     }
   }, [currentPath, newFolder]);
 
+  // SearchFunction
   useEffect(() => {
     if (!searchValue) {
       const dbx = new Dropbox({ accessToken: token$.value, fetch });
@@ -306,11 +257,15 @@ const Home = (props) => {
           setCurrentFolder(value);
         })
     }
-  }, [searchValue])
+  }, [debouncedQuery])
 
   function searchFile (e) {
-    setSearchValue(e.target.value)
+    setSearchValue(e.target.value);
   }
+    // SearchFunction ends
+
+
+
   return (
     <>
       {
@@ -321,16 +276,14 @@ const Home = (props) => {
             </div>
             <div className={styles['home__right-container']}>
               <Header currentPath={props.location} searchFile={searchFile} value={searchValue}/>
-              <Content currentFolder={currentFolder} currentPath={currentPath} copyFile={copyFileDialog} downloadFile={downloadFileRequest} renameFileFunc={renameFileDialog} deleteFile={deleteFileDialog} moveFileFunc={moveFileDialog}/>
+              <Content currentFolder={currentFolder} currentPath={currentPath} downloadFile={downloadFileRequest} renameFileFunc={renameFileDialog} deleteFile={deleteFile} moveFileFunc={moveFileDialog}/>
             </div>
           </div>
       }
       {moveFile ? <MoveFile closeMoveFile={() => setMoveFile(false)} moveFileRequest={moveFileRequest} selectedFile={moveFileData}/> : null}
-      {copyFile ? <CopyFile closeCopyFile={() => setCopyFile(false)} copyFileRequest={copyFileRequest} selectedFile={copyFileData}/> : null}
       {renameFile ? <RenameFile fileData={renameFileData} onRenameFileChange={onRenameFileChange} renameFileRequest={renameFileRequest} closeRenameFile={() => setRenameFile(false)}/> : null}
       {uploadFile ? <UploadFile closeClick={() => setUploadFile(false)} uploadFileRequest={uploadFileRequest}/> : null}
       {newFolder === true ? <Dialog currentPath={currentPath} exitDialog={() => setNewFolder(false)} /> : null}
-      {deleteFile ? <DeleteFile file={deleteFileData} deleteFileRequest={deleteFileRequest} closeDialog={() => setDeleteFile(false)}/> : null}
     </>
   )
 }
