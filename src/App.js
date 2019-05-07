@@ -5,10 +5,10 @@ import Home from './Components/Home';
 
 function App() {
   return (
-    <Router>
+    <Router basename={process.env.PUBLIC_URL}>
       <div>
-        <Route exact path='/' component={Login}></Route>
-        <Route path='/home' component={Home}></Route>
+        <Route exact path='/' component={Login}/>
+        <Route path='/home' component={Home}/>
       </div>
     </Router>
   );
