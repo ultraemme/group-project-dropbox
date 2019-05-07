@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './FileType.module.css';
 import { Dropbox } from 'dropbox';
-import { token$, updateToken } from '../Store';
+import { token$ } from '../Store';
 
 const imageRegEx = /\.(gif|jpg|jpeg|tiff|tif|png|bmp)$/i;
 
@@ -17,7 +17,7 @@ const FileType = (props) => {
         setUrl(urlBlob);
       })
     }
-  }, [])
+  }, [props.file.name, props.file.path_lower])
 
   if(props.file['.tag'] === 'folder'){
     return (
@@ -26,7 +26,7 @@ const FileType = (props) => {
   }
   else if(imageRegEx.test(props.file.name)){
     return (
-      <img src={url}></img>
+      <img src={url} alt={props.file.name}></img>
     )
   }
   else {
