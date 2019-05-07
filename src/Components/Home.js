@@ -264,8 +264,6 @@ const Home = (props) => {
   }
     // SearchFunction ends
 
-
-
   return (
     <>
       {
