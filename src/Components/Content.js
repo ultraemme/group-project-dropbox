@@ -3,6 +3,7 @@ import styles from './Content.module.css';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import Dropdown from './Dropdown';
+import FileType from './FileType';
 
 function formatLastModified (date) {
   if (moment(new Date()).diff(date, 'days') > 2) {
@@ -10,11 +11,6 @@ function formatLastModified (date) {
   } else {
     return moment(date).fromNow();
   }
-}
-function getFileType(tag){
-  return tag === 'folder' ?
-    <i className={`material-icons ${styles['content__table-icon']}`}>folder</i> :
-    <i className={`material-icons ${styles['content__table-icon']}`}>insert_drive_file</i>
 }
 function formatSize(byte){
   if(!byte) return;
@@ -66,7 +62,7 @@ const Content = (props) => {
               <th className={styles['content__table-th']}>File name</th>
               <th className={styles['content__table-th']}>Last modified</th>
               <th className={styles['content__table-th']}>Size</th>
-              <th className={styles['content__table-th']}>Dropdown</th>
+              <th className={styles['content__table-th']}></th>
             </tr>
           </thead>
           <tbody>
@@ -75,7 +71,7 @@ const Content = (props) => {
               return (
                 <tr className={styles['content__table-row']} key={file.id}>
                   <td className={styles['content__table-td']}><i className="material-icons" onClick={() => addFavorite(file)}>star</i></td>
-                  <td className={styles['content__table-td']}>{getFileType(file['.tag'])}</td>
+                  <td className={styles['content__table-td']}><FileType file={file}/></td>
                   <td className={styles['content__table-td']}>{file['.tag'] === 'folder' ? <Link className={styles['content__link']} to={`/home${file.path_display}`}>{file.name}</Link> : <span className={styles['content__link']} onClick={() => props.downloadFile(file.name, file.path_display)}>{file.name}</span>}</td>
                   <td className={styles['content__table-td']}>{file.server_modified ? formatLastModified(file.server_modified) : null}</td>
                   <td className={styles['content__table-td']}>{formatSize(file.size)}</td>

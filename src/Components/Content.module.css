@@ -44,6 +44,18 @@
   padding: 15px 0 15px 0;
   color: #424242;
 }
+.content__table-td:nth-child(1){
+  width: 32px;
+}
+.content__table-td:nth-child(2){
+  width: 32px;
+}
+.content__table-td:nth-child(3){
+  padding-left: 15px;
+}
+.content__table-td:last-child{
+  width: 32px;
+}
 .content__link{
   color: #E91E63;
   text-decoration: none;

@@ -30,7 +30,6 @@ const Home = (props) => {
   const [searchValue, setSearchValue] = useState();
   const [debouncedQuery] = useDebounce(searchValue, 500);
 
-
   function signOut() {
     setRedirectLogout(true);
     updateToken(null);
