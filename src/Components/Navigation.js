@@ -25,9 +25,6 @@ const Navigation = (props) => {
           <li>
             <Link to="/home/favorites">Favorites</Link>
           </li>
-          <li>
-            <Link to="/home/about">About us</Link>
-          </li>
         </ul>
         <span className={styles['nav__line']}></span>
         <ul className={styles['nav__ul']}>
