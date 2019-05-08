@@ -40,7 +40,7 @@ const Content = (props) => {
     } else {
       if (e.nativeEvent.clientY + 257 > e.nativeEvent.view.window.innerHeight) {
         if (e.nativeEvent.clientY > e.nativeEvent.view.window.innerHeight-10) {
-          setDropdown({ toggled: true, posX: e.nativeEvent.clientX-10, posY: e.nativeEvent.clientY-257, file });
+          setDropdown({ toggled: true, posX: e.nativeEvent.clientX-10, posY: e.nativeEvent.clientY-256, file });
         } else {
           setDropdown({ toggled: true, posX: e.nativeEvent.clientX-10, posY: e.nativeEvent.clientY-247, file });
         }
