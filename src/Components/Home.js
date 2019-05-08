@@ -35,10 +35,27 @@ const Home = (props) => {
   const [deleteFileData, setDeleteFileData] = useState({});
   const [copyFile, setCopyFile] = useState(false);
   const [copyFileData, setCopyFileData] = useState({})
+  const [favorites, setFavorites] = useState([]);
 
   function signOut() {
+    localStorage.removeItem('lockbox_favorites');
     setRedirectLogout(true);
     updateToken(null);
+  }
+
+  function addFavorite(file) {
+    let arr = [...favorites];
+    arr.push(file);
+    setFavorites(arr);
+    localStorage.setItem('lockbox_favorites', JSON.stringify(arr));
+}
+
+  function removeFavorite(file) {
+    let arr = favorites.filter(x => {
+      return x.id !== file.id;
+    })
+    setFavorites(arr);
+    localStorage.setItem('lockbox_favorites', JSON.stringify(arr));
   }
 
   function deleteFileDialog (file) {
@@ -267,11 +284,12 @@ const Home = (props) => {
         }
         setUser(user);
       })
-      // const dbx = new Dropbox({accessToken: token$.value, fetch});
       dbx.filesListFolder({path: currentPath})
       .then(res => {
         console.log(res);
         setCurrentFolder(res.entries);
+        if(localStorage.getItem('lockbox_favorites')) setFavorites(JSON.parse(localStorage.getItem('lockbox_favorites')));
+        
       })
     }
   }, [didMount]);
@@ -311,6 +329,7 @@ const Home = (props) => {
   }, [debouncedQuery])
 
   function searchFile (e) {
+    console.log(favorites);
     setSearchValue(e.target.value);
   }
     // SearchFunction ends
@@ -325,7 +344,7 @@ const Home = (props) => {
             </div>
             <div className={styles['home__right-container']}>
               <Header currentPath={props.location} searchFile={searchFile} value={searchValue}/>
-              <Content deleteFile={deleteFileDialog} copyFile={copyFileDialog} currentFolder={currentFolder} currentPath={currentPath} downloadFile={downloadFileRequest} renameFileFunc={renameFileDialog} moveFileFunc={moveFileDialog}/>
+              <Content favorites={favorites} removeFavorite={removeFavorite} addFavorite={addFavorite} deleteFile={deleteFileDialog} copyFile={copyFileDialog} currentFolder={currentFolder} currentPath={currentPath} downloadFile={downloadFileRequest} renameFileFunc={renameFileDialog} moveFileFunc={moveFileDialog}/>
             </div>
           </div>
       }

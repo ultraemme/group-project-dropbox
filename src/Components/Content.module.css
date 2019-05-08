@@ -5,6 +5,7 @@
   height: calc(100vh - 100px);
   background: #fafafa;
   overflow: auto;
+  flex-wrap: wrap;
 }
 .content__table{
   width: 80%;
@@ -57,6 +58,7 @@
   padding-right: 50px;
   width: 32px;
 }
+
 .content__link{
   color: #E91E63;
   text-decoration: none;
@@ -64,6 +66,26 @@
   cursor: pointer;
   margin: 0;
 }
+
 .content__table-icon{
   color: #E91E63;
 }
+
+.content__star {
+  user-select: none;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+  opacity: 0.3;
+}
+
+.content__star:hover {
+  opacity: 0.45;
+}
+
+.content__star--active {
+  user-select: none;
+  cursor: pointer;
+  color: #FFA000;
+}
+
+

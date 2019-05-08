@@ -1,7 +1,6 @@
 import React from 'react';
 import styles from './Navigation.module.css';
 import logo from '../lockbox_logo.svg';
-import { Link } from 'react-router-dom';
 
 const Navigation = (props) => {
 
@@ -20,19 +19,7 @@ const Navigation = (props) => {
       <div className={styles['nav__btns-container']}>
         <ul className={styles['nav__ul']}>
           <li>
-            <Link to="/home">Files</Link>
-          </li>
-          <li>
-            <Link to="/home/favorites">Favorites</Link>
-          </li>
-        </ul>
-        <span className={styles['nav__line']}></span>
-        <ul className={styles['nav__ul']}>
-          <li>
             <button onClick={props.uploadFile}>Upload file</button>
-          </li>
-          <li>
-            <button>Upload folder</button>
           </li>
           <li>
             <button onClick={props.newFile}>New folder</button>
