@@ -12,6 +12,8 @@ import UploadFile from './UploadFile';
 import RenameFile from './RenameFile';
 import MoveFile from './MoveFile';
 import { useDebounce } from "use-debounce";
+import DeleteFile from './DeleteFile';
+import CopyFile from './CopyFile';
 
 const Home = (props) => {
   // console.log("HEJ", props.location);
@@ -29,14 +31,39 @@ const Home = (props) => {
   const [user, setUser] = useState({});
   const [searchValue, setSearchValue] = useState();
   const [debouncedQuery] = useDebounce(searchValue, 500);
-
+  const [deleteFile, setDeleteFile] = useState(false);
+  const [deleteFileData, setDeleteFileData] = useState({});
+  const [copyFile, setCopyFile] = useState(false);
+  const [copyFileData, setCopyFileData] = useState({})
+  const [favorites, setFavorites] = useState([]);
 
   function signOut() {
+    localStorage.removeItem('lockbox_favorites');
     setRedirectLogout(true);
     updateToken(null);
   }
 
-  function deleteFile(file) {
+  function addFavorite(file) {
+    let arr = [...favorites];
+    arr.push(file);
+    setFavorites(arr);
+    localStorage.setItem('lockbox_favorites', JSON.stringify(arr));
+}
+
+  function removeFavorite(file) {
+    let arr = favorites.filter(x => {
+      return x.id !== file.id;
+    })
+    setFavorites(arr);
+    localStorage.setItem('lockbox_favorites', JSON.stringify(arr));
+  }
+
+  function deleteFileDialog (file) {
+    setDeleteFile(true);
+    setDeleteFileData(file)
+  }
+
+  function deleteFileRequest(file) {
     //trigger dialog
     const dbx = new Dropbox({ accessToken: token$.value, fetch });
     dbx.filesDeleteV2({ path: file.path_lower })
@@ -45,7 +72,38 @@ const Home = (props) => {
         let newFolder = currentFolder.filter((t) => {
           return file !== t;
         })
+        setDeleteFile(false);
         setCurrentFolder(newFolder);
+      })
+      .catch(err => {
+        console.error(err);
+      })
+  }
+
+  function copyFileDialog (file) {
+    setCopyFileData(file)
+    setCopyFile(true);
+  }
+
+  function copyFileRequest (file, toPath) {
+    toPath = (toPath === "/") ? "" : toPath;
+    const dbx = new Dropbox({accessToken: token$.value, fetch});
+    dbx.filesCopyV2({
+      from_path: file.path_lower,
+      to_path: `${toPath}/${file.name}`,
+      autorename: true,
+    })
+      .then(res => {
+        const dbx = new Dropbox({accessToken: token$.value, fetch});
+        dbx.filesListFolder({path: currentPath})
+          .then(res => {
+            console.log("refresh");
+            setCurrentFolder(res.entries);
+            setCopyFile(false);
+          })
+          .catch(err => {
+            console.error(err);
+          })
       })
       .catch(err => {
         console.error(err);
@@ -56,7 +114,13 @@ const Home = (props) => {
     setmoveFileData(file)
     setMoveFile(true);
   }
+
   function moveFileRequest(file, toPath){
+    if(toPath === '/') {
+      toPath = '';
+    } else if(!toPath) {
+      return;
+    }
     const dbx = new Dropbox({accessToken: token$.value, fetch});
     dbx.filesMoveV2({
       from_path: file.path_lower,
@@ -111,29 +175,34 @@ const Home = (props) => {
     })
   }
 
-  function downloadFileRequest(fileName, filePath,folder){
-    let type = folder['.tag'];
-    if (type === "folder"){
+  function downloadFileRequest(fileName, filePath, tag){
+    if (tag === "folder"){
       const dbx = new Dropbox({accessToken: token$.value, fetch});
       dbx.filesDownloadZip({path: filePath})
-      .then((res) => {
-        let url = URL.createObjectURL(res.fileBlob);
-        let downloadButton = document.createElement('a');
-        downloadButton.setAttribute('href', url);
-        downloadButton.setAttribute('download', res.name);
-        downloadButton.click();
-      })
+        .then((res) => {
+          let url = URL.createObjectURL(res.fileBlob);
+          let downloadButton = document.createElement('a');
+          downloadButton.setAttribute('href', url);
+          downloadButton.setAttribute('download', res.name);
+          downloadButton.click();
+        })
+        .catch((err) => {
+          console.log(err.response);
+        })
 
     }else {
       const dbx = new Dropbox({accessToken: token$.value, fetch});
       dbx.filesDownload({path: filePath})
-      .then((res) => {
-        let url = URL.createObjectURL(res.fileBlob);
-        let downloadButton = document.createElement('a');
-        downloadButton.setAttribute('href', url);
-        downloadButton.setAttribute('download', res.name);
-        downloadButton.click();
-      })
+        .then((res) => {
+          let url = URL.createObjectURL(res.fileBlob);
+          let downloadButton = document.createElement('a');
+          downloadButton.setAttribute('href', url);
+          downloadButton.setAttribute('download', res.name);
+          downloadButton.click();
+        })
+        .catch((err) => {
+          console.log(err.response);
+        })
     }
   }
 
@@ -151,8 +220,7 @@ const Home = (props) => {
             setUploadFile(false);
           })
       })
-    }
-    else{
+    } else {
       console.log('The size is HIGHER than 150 MB');
       const dbx = new Dropbox({accessToken: token$.value, fetch});
       dbx.filesUploadSessionStart({contents: files[0], close: false})
@@ -216,11 +284,12 @@ const Home = (props) => {
         }
         setUser(user);
       })
-      // const dbx = new Dropbox({accessToken: token$.value, fetch});
       dbx.filesListFolder({path: currentPath})
       .then(res => {
         console.log(res);
         setCurrentFolder(res.entries);
+        if(localStorage.getItem('lockbox_favorites')) setFavorites(JSON.parse(localStorage.getItem('lockbox_favorites')));
+        
       })
     }
   }, [didMount]);
@@ -260,6 +329,7 @@ const Home = (props) => {
   }, [debouncedQuery])
 
   function searchFile (e) {
+    console.log(favorites);
     setSearchValue(e.target.value);
   }
     // SearchFunction ends
@@ -274,14 +344,16 @@ const Home = (props) => {
             </div>
             <div className={styles['home__right-container']}>
               <Header currentPath={props.location} searchFile={searchFile} value={searchValue}/>
-              <Content currentFolder={currentFolder} currentPath={currentPath} downloadFile={downloadFileRequest} renameFileFunc={renameFileDialog} deleteFile={deleteFile} moveFileFunc={moveFileDialog}/>
+              <Content favorites={favorites} removeFavorite={removeFavorite} addFavorite={addFavorite} deleteFile={deleteFileDialog} copyFile={copyFileDialog} currentFolder={currentFolder} currentPath={currentPath} downloadFile={downloadFileRequest} renameFileFunc={renameFileDialog} moveFileFunc={moveFileDialog}/>
             </div>
           </div>
       }
       {moveFile ? <MoveFile closeMoveFile={() => setMoveFile(false)} moveFileRequest={moveFileRequest} selectedFile={moveFileData}/> : null}
+      {copyFile ? <CopyFile closeCopyFile={() => setCopyFile(false)} copyFileRequest={copyFileRequest} selectedFile={copyFileData}/> : null}
       {renameFile ? <RenameFile fileData={renameFileData} onRenameFileChange={onRenameFileChange} renameFileRequest={renameFileRequest} closeRenameFile={() => setRenameFile(false)}/> : null}
       {uploadFile ? <UploadFile closeClick={() => setUploadFile(false)} uploadFileRequest={uploadFileRequest}/> : null}
       {newFolder === true ? <Dialog currentPath={currentPath} exitDialog={() => setNewFolder(false)} /> : null}
+      {deleteFile ? <DeleteFile file={deleteFileData} deleteFileRequest={deleteFileRequest} closeDialog={() => setDeleteFile(false)}/> : null}
     </>
   )
 }

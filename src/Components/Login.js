@@ -7,7 +7,7 @@ const Login = (props) => {
     <div className={styles['login-container']}>
       <div className={styles['login-container__content-wrapper']}>
         <div className={styles['login-container__logo-wrapper']}>
-          <img className={styles['logo-wrapper__logo']} src={logo}></img>
+          <img className={styles['logo-wrapper__logo']} src={logo} alt='Lockbox logotype'></img>
           <h1 className={styles['logo-wrapper__logo-text']}>LOCKBOX</h1>
         </div>
         <span className={styles['login-container__line']}></span>
