@@ -11,24 +11,29 @@ const Dropdown = (props) => {
     props.toggleDropdown();
     props.deleteFile(props.file);
   }
+
   function downloadFile() {
     props.toggleDropdown();
     props.downloadFile(props.file.name, props.file.path_display, props.file['.tag']);
   }
+
   function renameFile(e){
     props.toggleDropdown();
     props.renameFileFunc(props.file);
   }
+
   function moveFile(e){
     props.toggleDropdown();
     props.moveFileFunc(props.file);
   }
+
   function copyFile (e) {
     props.toggleDropdown();
     props.copyFile(props.file);
   }
+
   return (
-    <div onMouseLeave={props.toggleDropdown} className={styles.dropdown} style={{top: props.posY-10, left: props.posX-10}}>
+    <div onMouseLeave={props.toggleDropdown} className={styles.dropdown} style={{top: props.posY, left: props.posX}}>
       <ul className={styles.dropdown__list}>
         <li key={"star"} className={styles['dropdown__list-item']}>
           <span className={`${styles['dropdown__list-icon']} material-icons`}>star</span>

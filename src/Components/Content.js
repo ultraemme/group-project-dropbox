@@ -39,7 +39,11 @@ const Content = (props) => {
     if (dropdown.toggled === true) {
       setDropdown({ toggled: false });
     } else {
-      setDropdown({ toggled: true, posX: e.nativeEvent.clientX, posY: e.nativeEvent.clientY, file });
+      if (e.nativeEvent.clientY + 257 > e.nativeEvent.view.window.innerHeight) {
+        setDropdown({ toggled: true, posX: e.nativeEvent.clientX-10, posY: e.nativeEvent.clientY-247, file });
+      } else {
+        setDropdown({ toggled: true, posX: e.nativeEvent.clientX-10, posY: e.nativeEvent.clientY-10, file });
+      }
     }
   }
 
