@@ -41,6 +41,9 @@
   color: #424242;
   font-weight: 400;
 }
+.content__table-th:nth-child(3){
+  padding-left: 15px;
+}
 .content__table-td{
   font-size: 2rem;
   border-top: 1px solid #E0E0E0;
@@ -97,6 +100,12 @@
   padding: 15px 0 15px 0;
   color: #424242;
 }
-.content__fav-table-td:first-child{
+.content__fav-table-td:nth-child(1){
   width: 32px;
+}
+.content__fav-table-td:nth-child(2){
+  width: 32px;
+}
+.content__fav-table-td:nth-child(3){
+  padding-left: 15px;
 }
