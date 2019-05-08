@@ -54,6 +54,7 @@
   padding-left: 15px;
 }
 .content__table-td:last-child{
+  padding-right: 50px;
   width: 32px;
 }
 .content__link{
