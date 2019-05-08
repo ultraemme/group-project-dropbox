@@ -13,7 +13,7 @@ import RenameFile from './RenameFile';
 import MoveFile from './MoveFile';
 import DeleteFile from './DeleteFile';
 import CopyFile from './CopyFile';
-
+import { Route } from 'react-router-dom';
 const Home = (props) => {
   // console.log("HEJ", props.location);
 
@@ -22,7 +22,7 @@ const Home = (props) => {
   const [renameFile, setRenameFile] = useState(false);
   const [renameFileData, setRenameFileData] = useState({});
   const [moveFile, setMoveFile] = useState(false);
-  const [moveFileData, setmoveFileData] = useState({})
+  const [moveFileData, setmoveFileData] = useState({});
   const [newFolder, setNewFolder] = useState(false);
   const [currentFolder, setCurrentFolder] = useState([]);
   const [redirectLogout, setRedirectLogout] = useState(false);
@@ -32,7 +32,8 @@ const Home = (props) => {
   const [deleteFile, setDeleteFile] = useState(false);
   const [deleteFileData, setDeleteFileData] = useState({});
   const [copyFile, setCopyFile] = useState(false);
-  const [copyFileData, setCopyFileData] = useState({})
+  const [copyFileData, setCopyFileData] = useState({});
+  const [about, setAbout] = useState(false);
 
   function signOut() {
     setRedirectLogout(true);
@@ -319,9 +320,10 @@ const Home = (props) => {
             <div className={styles['home__left-container']}>
               <Navigation newFile={() => setNewFolder(true)} uploadFile={() => setUploadFile(true)} signOut={signOut} user={user}/>
             </div>
+
             <div className={styles['home__right-container']}>
               <Header currentPath={props.location} searchFile={searchFile} value={searchValue}/>
-              <Content currentFolder={currentFolder} currentPath={currentPath} copyFile={copyFileDialog} downloadFile={downloadFileRequest} renameFileFunc={renameFileDialog} deleteFile={deleteFileDialog} moveFileFunc={moveFileDialog}/>
+               <Content currentFolder={currentFolder} currentPath={currentPath} copyFile={copyFileDialog} downloadFile={downloadFileRequest} renameFileFunc={renameFileDialog} deleteFile={deleteFileDialog} moveFileFunc={moveFileDialog}/>
             </div>
           </div>
       }
