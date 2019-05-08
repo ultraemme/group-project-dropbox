@@ -88,7 +88,8 @@ const Content = (props) => {
       <table className={styles['content__table']}>
         <thead>
           <tr className={styles['content__table-row']}>
-            {props.favorites.length ? <th></th> : null}
+            {props.favorites.length ? <th className={styles['content__table-th']}></th> : null}
+            {props.favorites.length ? <th className={styles['content__table-th']}></th> : null}
             <th className={styles['content__table-th']}>
               Favorites
             </th>
@@ -100,6 +101,7 @@ const Content = (props) => {
               return (
                 <tr className={styles['content__table-row']} key={favorite.id}>
                   <td className={styles['content__fav-table-td']}><i className={`${styles['content__star--active']} material-icons`} onClick={() => props.removeFavorite(favorite)}>star</i></td>
+                  <td className={styles['content__fav-table-td']}><FileType file={favorite} /></td>
                   <td className={styles['content__fav-table-td']}>{favorite['.tag'] === 'folder' ? <Link className={styles['content__link']} to={`/home${favorite.path_display}`}>{favorite.name}</Link> : <span className={styles['content__link']} onClick={() => props.downloadFile(favorite.name, favorite.path_display)}>{favorite.name}</span>}</td>
                 </tr>
               )
