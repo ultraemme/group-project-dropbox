@@ -27,6 +27,7 @@
 .content__table-dropdown {
   opacity: 0.5;
   cursor: pointer;
+  user-select: none;
 }
 
 .content__table-dropdown:hover {

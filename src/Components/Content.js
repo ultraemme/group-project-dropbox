@@ -32,7 +32,6 @@ function formatSize(byte) {
 }
 
 const Content = (props) => {
-  console.log(props);
   const [dropdown, setDropdown] = useState({ toggled: false });
 
   function toggleDropdown(e, file) {
@@ -40,7 +39,11 @@ const Content = (props) => {
       setDropdown({ toggled: false });
     } else {
       if (e.nativeEvent.clientY + 257 > e.nativeEvent.view.window.innerHeight) {
-        setDropdown({ toggled: true, posX: e.nativeEvent.clientX-10, posY: e.nativeEvent.clientY-247, file });
+        if (e.nativeEvent.clientY > e.nativeEvent.view.window.innerHeight-10) {
+          setDropdown({ toggled: true, posX: e.nativeEvent.clientX-10, posY: e.nativeEvent.clientY-257, file });
+        } else {
+          setDropdown({ toggled: true, posX: e.nativeEvent.clientX-10, posY: e.nativeEvent.clientY-247, file });
+        }
       } else {
         setDropdown({ toggled: true, posX: e.nativeEvent.clientX-10, posY: e.nativeEvent.clientY-10, file });
       }
