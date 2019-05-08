@@ -1,8 +1,6 @@
 import React from 'react';
 import styles from './Header.module.css';
 import { Link } from 'react-router-dom';
-
-
 const Header = (props) => {
   const pathArr = props.currentPath.pathname.substr(1).split('/');
   let currentDir = "";
@@ -14,7 +12,7 @@ const Header = (props) => {
             currentDir += `/${path}`;
             return (
               <div key={path} className={styles.header__row} >
-                <Link className={styles['header__link']} to={currentDir}>{path}</Link>
+                <Link className={styles['header__link']} to={currentDir}>{path.charAt(0).toUpperCase() + path.slice(1)}</Link>
                 <span className={styles['header__link-arrow']}> > </span>
               </div>
             )
