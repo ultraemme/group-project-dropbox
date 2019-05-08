@@ -2,21 +2,27 @@
   "name": "dropbox-api",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://ultraemme.github.io/mandatory-advanced-js5/",
   "dependencies": {
     "axios": "^0.18.0",
+    "debounce": "^1.2.0",
     "dropbox": "^4.0.17",
+    "gh-pages": "^2.0.1",
     "moment": "^2.24.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-helmet": "^5.2.0",
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.0.0",
-    "rxjs": "^6.5.1"
+    "rxjs": "^6.5.1",
+    "use-debounce": "^2.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && cp build/index.html build/404.html",
     "test": "react-scripts test",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

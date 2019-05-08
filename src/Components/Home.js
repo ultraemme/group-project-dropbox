@@ -11,6 +11,7 @@ import Dialog from './Dialog';
 import UploadFile from './UploadFile';
 import RenameFile from './RenameFile';
 import MoveFile from './MoveFile';
+import { useDebounce } from "use-debounce";
 import DeleteFile from './DeleteFile';
 import CopyFile from './CopyFile';
 import { Route } from 'react-router-dom';
@@ -29,15 +30,32 @@ const Home = (props) => {
   const [didMount, setDidMount] = useState(false);
   const [user, setUser] = useState({});
   const [searchValue, setSearchValue] = useState();
+  const [debouncedQuery] = useDebounce(searchValue, 500);
   const [deleteFile, setDeleteFile] = useState(false);
   const [deleteFileData, setDeleteFileData] = useState({});
   const [copyFile, setCopyFile] = useState(false);
-  const [copyFileData, setCopyFileData] = useState({});
-  const [about, setAbout] = useState(false);
+  const [copyFileData, setCopyFileData] = useState({})
+  const [favorites, setFavorites] = useState([]);
 
   function signOut() {
+    localStorage.removeItem('lockbox_favorites');
     setRedirectLogout(true);
     updateToken(null);
+  }
+
+  function addFavorite(file) {
+    let arr = [...favorites];
+    arr.push(file);
+    setFavorites(arr);
+    localStorage.setItem('lockbox_favorites', JSON.stringify(arr));
+}
+
+  function removeFavorite(file) {
+    let arr = favorites.filter(x => {
+      return x.id !== file.id;
+    })
+    setFavorites(arr);
+    localStorage.setItem('lockbox_favorites', JSON.stringify(arr));
   }
 
   function deleteFileDialog (file) {
@@ -46,6 +64,7 @@ const Home = (props) => {
   }
 
   function deleteFileRequest(file) {
+    //trigger dialog
     const dbx = new Dropbox({ accessToken: token$.value, fetch });
     dbx.filesDeleteV2({ path: file.path_lower })
       .then(res => {
@@ -59,11 +78,6 @@ const Home = (props) => {
       .catch(err => {
         console.error(err);
       })
-  }
-
-  function moveFileDialog(file){
-    setmoveFileData(file)
-    setMoveFile(true);
   }
 
   function copyFileDialog (file) {
@@ -96,15 +110,18 @@ const Home = (props) => {
       })
   }
 
+  function moveFileDialog(file){
+    setmoveFileData(file)
+    setMoveFile(true);
+  }
+
   function moveFileRequest(file, toPath){
-    if(toPath === '/'){
+    if(toPath === '/') {
       toPath = '';
-    }
-    else if(!toPath){
+    } else if(!toPath) {
       return;
     }
     const dbx = new Dropbox({accessToken: token$.value, fetch});
-    console.log(`${toPath}/${file.name}`);
     dbx.filesMoveV2({
       from_path: file.path_lower,
       to_path: `${toPath}/${file.name}`,
@@ -162,25 +179,30 @@ const Home = (props) => {
     if (tag === "folder"){
       const dbx = new Dropbox({accessToken: token$.value, fetch});
       dbx.filesDownloadZip({path: filePath})
-      .then((res) => {
-        let url = URL.createObjectURL(res.fileBlob);
-        let downloadButton = document.createElement('a');
-        downloadButton.setAttribute('href', url);
-        downloadButton.setAttribute('download', res.name);
-        downloadButton.click();
-      })
+        .then((res) => {
+          let url = URL.createObjectURL(res.fileBlob);
+          let downloadButton = document.createElement('a');
+          downloadButton.setAttribute('href', url);
+          downloadButton.setAttribute('download', res.name);
+          downloadButton.click();
+        })
+        .catch((err) => {
+          console.log(err.response);
+        })
 
-    }
-    else {
+    }else {
       const dbx = new Dropbox({accessToken: token$.value, fetch});
       dbx.filesDownload({path: filePath})
-      .then((res) => {
-        let url = URL.createObjectURL(res.fileBlob);
-        let downloadButton = document.createElement('a');
-        downloadButton.setAttribute('href', url);
-        downloadButton.setAttribute('download', res.name);
-        downloadButton.click();
-      })
+        .then((res) => {
+          let url = URL.createObjectURL(res.fileBlob);
+          let downloadButton = document.createElement('a');
+          downloadButton.setAttribute('href', url);
+          downloadButton.setAttribute('download', res.name);
+          downloadButton.click();
+        })
+        .catch((err) => {
+          console.log(err.response);
+        })
     }
   }
 
@@ -191,7 +213,6 @@ const Home = (props) => {
       const dbx = new Dropbox({accessToken: token$.value, fetch});
       dbx.filesUpload({contents: files[0], path: `${currentPath}/${files[0].name}`, mode: 'add', autorename: true, mute: false, strict_conflict: false})
       .then((res) => {
-        console.log(res);
         const dbx = new Dropbox({accessToken: token$.value, fetch});
         dbx.filesListFolder({path: currentPath})
           .then(res => {
@@ -199,11 +220,7 @@ const Home = (props) => {
             setUploadFile(false);
           })
       })
-      .catch((err) => {
-        console.log(err.response);
-      })
-    }
-    else{
+    } else {
       console.log('The size is HIGHER than 150 MB');
       const dbx = new Dropbox({accessToken: token$.value, fetch});
       dbx.filesUploadSessionStart({contents: files[0], close: false})
@@ -267,11 +284,12 @@ const Home = (props) => {
         }
         setUser(user);
       })
-      // const dbx = new Dropbox({accessToken: token$.value, fetch});
       dbx.filesListFolder({path: currentPath})
       .then(res => {
         console.log(res);
         setCurrentFolder(res.entries);
+        if(localStorage.getItem('lockbox_favorites')) setFavorites(JSON.parse(localStorage.getItem('lockbox_favorites')));
+        
       })
     }
   }, [didMount]);
@@ -286,6 +304,7 @@ const Home = (props) => {
     }
   }, [currentPath, newFolder]);
 
+  // SearchFunction
   useEffect(() => {
     if (!searchValue) {
       const dbx = new Dropbox({ accessToken: token$.value, fetch });
@@ -307,11 +326,14 @@ const Home = (props) => {
           setCurrentFolder(value);
         })
     }
-  }, [searchValue])
+  }, [debouncedQuery])
 
   function searchFile (e) {
-    setSearchValue(e.target.value)
+    console.log(favorites);
+    setSearchValue(e.target.value);
   }
+    // SearchFunction ends
+
   return (
     <>
       {
@@ -323,7 +345,7 @@ const Home = (props) => {
 
             <div className={styles['home__right-container']}>
               <Header currentPath={props.location} searchFile={searchFile} value={searchValue}/>
-               <Content currentFolder={currentFolder} currentPath={currentPath} copyFile={copyFileDialog} downloadFile={downloadFileRequest} renameFileFunc={renameFileDialog} deleteFile={deleteFileDialog} moveFileFunc={moveFileDialog}/>
+              <Content favorites={favorites} removeFavorite={removeFavorite} addFavorite={addFavorite} deleteFile={deleteFileDialog} copyFile={copyFileDialog} currentFolder={currentFolder} currentPath={currentPath} downloadFile={downloadFileRequest} renameFileFunc={renameFileDialog} moveFileFunc={moveFileDialog}/>
             </div>
           </div>
       }
