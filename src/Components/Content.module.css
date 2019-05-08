@@ -17,6 +17,7 @@
 }
 .content__table-row{
   transition: ease-in-out 0.1s;
+  height: 68px;
 }
 
 .content__table-row:hover {
