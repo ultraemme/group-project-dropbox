@@ -1,9 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
+import Dialog from './Components/Dialog';
+import {shallow, configure} from "enzyme";
+import Adapter from "enzyme-adapter-react-16";
 
-it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
-  ReactDOM.unmountComponentAtNode(div);
+configure({adapter: new Adapter()})
+
+test('check onChange function', () => {
+  const wrapper = shallow (<Dialog />)
+  wrapper.find("input").simulate("change",{target:{ value :"test"}})
+  console.log (wrapper.state())
 });
