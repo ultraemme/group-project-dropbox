@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import styles from './MoveFile.module.css';
-import { Dropbox } from 'dropbox';
-import { token$ } from '../Store';
+import styles from '../css/MoveFile.module.css';
+import { Dropbox } from 'dropbox/src/index';
+import { token$ } from '../../Store';
 
 function formatFromPath(path){
   let pathSplit = path.split('/');

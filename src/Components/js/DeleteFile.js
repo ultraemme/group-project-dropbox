@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './DeleteFile.module.css';
+import styles from '../css/DeleteFile.module.css';
 
 const DeleteFile = (props) => {
   return (

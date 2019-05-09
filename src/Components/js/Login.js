@@ -1,6 +1,6 @@
 import React from 'react';
-import logo from '../lockbox_logo.svg';
-import styles from './Login.module.css';
+import logo from '../../lockbox_logo.svg';
+import styles from '../css/Login.module.css';
 
 const Login = (props) => {
   return (
