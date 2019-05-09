@@ -1,18 +1,19 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import styles from '../css/Dialog.module.css';
-import { Dropbox } from 'dropbox/src/index';
+import { Dropbox } from 'dropbox';
 import { token$ } from '../../Store';
 
 const Dialog = (props) => {
-    const [folderName,setFoldername] = useState("");
+    const [folderName, setFolderName] = useState("");
 
     function handleFolderName(e) {
-        setFoldername(e.target.value);
+        setFolderName(e.target.value);
     }
+
     function handleNewFolder() {
         let dbx = new Dropbox({accessToken: token$.value, fetch});
         console.log('dbx', dbx);
-        dbx.filesCreateFolder({ path: props.currentPath + "/" + folderName})
+        dbx.filesCreateFolderV2({ path: props.currentPath + "/" + folderName})
         .then(()=> props.exitDialog());
     }
     return (

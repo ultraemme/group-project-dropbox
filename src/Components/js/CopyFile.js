@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../css/MoveFile.module.css';
-import { Dropbox } from 'dropbox/src/index';
+import { Dropbox } from 'dropbox';
 import { token$ } from '../../Store';
 
 function formatFromPath(path){
