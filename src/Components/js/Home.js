@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Dropbox } from 'dropbox';
-import { token$, updateToken } from '../Store';
+import axios from 'axios/index';
+import { Dropbox } from 'dropbox/src/index';
+import { token$, updateToken } from '../../Store';
 import { Redirect } from 'react-router-dom';
 import Header from './Header';
 import Content from './Content';
 import Navigation from './Navigation';
-import styles from './Home.module.css';
+import styles from '../css/Home.module.css';
 import Dialog from './Dialog';
 import UploadFile from './UploadFile';
 import RenameFile from './RenameFile';
 import MoveFile from './MoveFile';
-import { useDebounce } from "use-debounce";
+import { useDebounce } from "use-debounce/src/index";
 import DeleteFile from './DeleteFile';
 import CopyFile from './CopyFile';
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import styles from './Content.module.css';
+import styles from '../css/Content.module.css';
 import { Link } from 'react-router-dom';
-import moment from 'moment';
+import moment from 'moment/moment';
 import Dropdown from './Dropdown';
 import FileType from './FileType';
 
