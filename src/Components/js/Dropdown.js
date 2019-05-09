@@ -3,16 +3,41 @@ import styles from '../css/Dropdown.module.css';
 
 const Dropdown = (props) => {
 
-  function logFile (file) { //temporary
-    console.log(file);
+  function renderFavoriteAction () {
+    for (let favorite of props.favorites) {
+      if (favorite.id === props.file.id) {
+        return (
+          <li key={"star"} onClick={removeFavorite} className={styles['dropdown__list-item']}>
+            <span className={`${styles['dropdown__list-icon']} material-icons`}>star</span>
+            <span className={styles['dropdown__list-label']}>Remove from favorites</span>
+          </li>
+        )
+      }
+    }
+    return (
+      <li key={"star"} onClick={addFavorite} className={styles['dropdown__list-item']}>
+        <span className={`${styles['dropdown__list-icon']} material-icons`}>star</span>
+        <span className={styles['dropdown__list-label']}>Add to favorites</span>
+      </li>
+    )
   }
 
-  function deleteFile() {
+  function addFavorite (e) {
+    props.toggleDropdown();
+    props.addFavorite(props.file);
+  }
+
+  function removeFavorite (e) {
+    props.toggleDropdown();
+    props.removeFavorite(props.file);
+  }
+
+  function deleteFile(e) {
     props.toggleDropdown();
     props.deleteFile(props.file);
   }
 
-  function downloadFile() {
+  function downloadFile(e) {
     props.toggleDropdown();
     props.downloadFile(props.file.name, props.file.path_display, props.file['.tag']);
   }
@@ -34,11 +59,8 @@ const Dropdown = (props) => {
 
   return (
     <div onMouseLeave={props.toggleDropdown} className={styles.dropdown} style={{top: props.posY, left: props.posX}}>
-      <ul className={styles.dropdown__list}>
-        <li key={"star"} className={styles['dropdown__list-item']}>
-          <span className={`${styles['dropdown__list-icon']} material-icons`}>star</span>
-          <span className={styles['dropdown__list-label']}>Add to favorites</span>
-        </li>
+      <ul className={styles['dropdown__list']}>
+        {renderFavoriteAction()}
         <li key={"download"} onClick={downloadFile} className={styles['dropdown__list-item']}>
           <span className={`${styles['dropdown__list-icon']} material-icons`}>arrow_downward</span>
           <span className={styles['dropdown__list-label']}>Download</span>
@@ -58,10 +80,6 @@ const Dropdown = (props) => {
         <li key={"delete"} onClick={deleteFile} className={styles['dropdown__list-item']}>
           <span className={`${styles['dropdown__list-icon']} material-icons`}>delete</span>
           <span className={styles['dropdown__list-label']}>Delete</span>
-        </li>
-        <li key={"log"} onClick={() => logFile(props.file)} className={styles['dropdown__list-item']}>
-          <span className={`${styles['dropdown__list-icon']} material-icons`}>info</span>
-          <span className={styles['dropdown__list-label']}>console.log();</span>
         </li>
       </ul>
     </div>
