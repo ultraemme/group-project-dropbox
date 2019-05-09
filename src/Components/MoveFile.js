@@ -10,7 +10,6 @@ function formatFromPath(path){
   return rv;
 }
 function formatToPath(path){
-  console.log(path);
   if(path === '/'){
     return 'Home';
   }
@@ -26,8 +25,7 @@ const MoveFile = (props) => {
   const [folderList, setFolderList] = useState([]);
   const [selectedPath, setSelectedPath] = useState('');
 
-  function onChangeTest(e){
-    console.log(e.target.value);
+  function onChangeFolder(e){
     setSelectedPath(e.target.value);
   }
 
@@ -59,14 +57,14 @@ const MoveFile = (props) => {
         </div>
         <div className={styles['move-form__folder-container']}>
           <div className={styles['move-form__folder-wrapper']}>
-            <input className={styles['move-form__folder-radio']} type='radio' name='folder' value='/' onChange={onChangeTest} />
+            <input className={styles['move-form__folder-radio']} type='radio' name='folder' value='/' onChange={onChangeFolder} />
             <span className={styles['move-form__folder-checkmark']}><i className={`material-icons ${styles['move-form__folder-icon']}`}>folder</i>Home</span>
           </div>
           {
             folderList.map((folder) => {
               return (
                 <div className={styles['move-form__folder-wrapper']} key={folder.id}>
-                  <input className={styles['move-form__folder-radio']} type='radio' name='folder' value={folder.path_lower} onChange={onChangeTest}/>
+                  <input className={styles['move-form__folder-radio']} type='radio' name='folder' value={folder.path_lower} onChange={onChangeFolder}/>
                   <span className={styles['move-form__folder-checkmark']}><i className={`material-icons ${styles['move-form__folder-icon']}`}>folder</i>{folder.name}</span>
                 </div>
               )
