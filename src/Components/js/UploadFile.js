@@ -10,6 +10,7 @@ const UploadFile = (props) => {
   function onUploadSubmit(e){
     e.preventDefault();
     console.log()
+    console.log(fileInputRef.current.files);
     props.uploadFileRequest(fileInputRef.current.files);
   }
 
