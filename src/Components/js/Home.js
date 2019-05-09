@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios/index';
-import { Dropbox } from 'dropbox/src/index';
+import { Dropbox } from 'dropbox';
 import { token$, updateToken } from '../../Store';
 import { Redirect } from 'react-router-dom';
 import Header from './Header';

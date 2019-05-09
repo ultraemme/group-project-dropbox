@@ -1,10 +1,10 @@
 import React,{useState} from 'react';
 import styles from '../css/Dialog.module.css';
-import { Dropbox } from 'dropbox/src/index';
+import { Dropbox } from 'dropbox';
 import { token$ } from '../../Store';
 
 const Dialog = (props) => {
-    const [folderName,setFoldername] = useState("");
+    const [folderName, setFoldername] = useState("");
 
     function handleFolderName(e) {
         setFoldername(e.target.value);
