@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './RenameFile.module.css';
+import styles from '../css/RenameFile.module.css';
 
 const RenameFile = (props) => {
   function onRenameSubmit(e){

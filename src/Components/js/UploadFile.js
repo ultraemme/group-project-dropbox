@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import styles from './UploadFile.module.css';
+import styles from '../css/UploadFile.module.css';
 const UploadFile = (props) => {
   const fileInputRef = useRef(null)
 

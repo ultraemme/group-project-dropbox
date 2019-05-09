@@ -1,7 +1,7 @@
 import React,{useState} from 'react';
-import styles from './Dialog.module.css';
-import { Dropbox } from 'dropbox';
-import { token$ } from '../Store';
+import styles from '../css/Dialog.module.css';
+import { Dropbox } from 'dropbox/src/index';
+import { token$ } from '../../Store';
 
 const Dialog = (props) => {
     const [folderName,setFoldername] = useState("");

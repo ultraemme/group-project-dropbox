@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './Header.module.css';
+import styles from '../css/Header.module.css';
 import { Link } from 'react-router-dom';
 const Header = (props) => {
   const pathArr = props.currentPath.pathname.substr(1).split('/');

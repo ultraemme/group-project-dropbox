@@ -1,6 +1,6 @@
 import React from 'react';
-import styles from './Navigation.module.css';
-import logo from '../lockbox_logo.svg';
+import styles from '../css/Navigation.module.css';
+import logo from '../../lockbox_logo.svg';
 
 const Navigation = (props) => {
 
