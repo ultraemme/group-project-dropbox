@@ -12,7 +12,6 @@ const Dialog = (props) => {
 
     function handleNewFolder() {
         let dbx = new Dropbox({accessToken: token$.value, fetch});
-        console.log('dbx', dbx);
         dbx.filesCreateFolderV2({ path: props.currentPath + "/" + folderName})
         .then(()=> props.exitDialog());
     }
