@@ -16,6 +16,5 @@ test('button click', () => {
   const handleNewFolder = jest.fn();
   const wrapper = shallow (<Dialog />);
   wrapper.find('button').at(1).simulate('click');
-  console.log (handleNewFolder)
   expect(handleNewFolder).toHaveBeenCalled();
 });
