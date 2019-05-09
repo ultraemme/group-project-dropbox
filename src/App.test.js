@@ -9,14 +9,13 @@ jest.mock('Dropbox');
 
 test('check onChange function', () => {
   const wrapper = shallow (<Dialog  />);
-  let input =  wrapper.find("input");
+  let input =  wrapper.find("input").simulate('change',{target:{value:"test"}});
   console.log (input);
 });
-
 test('button click', () => {
   const handleNewFolder = jest.fn();
   const wrapper = shallow (<Dialog />);
   wrapper.find('button').at(1).simulate('click');
   console.log (handleNewFolder)
-  // expect(handleNewFolder).toHaveBeenCalled();
+  expect(handleNewFolder).toHaveBeenCalled();
 });
