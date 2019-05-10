@@ -207,7 +207,7 @@ const Home = (props) => {
   }
 
   function uploadFileRequest(files){
-    if(!files.length) return;
+    if(!files.length || files.length > 1) return;
     if(files[0].size < 150000000){
       console.log('The size is lower than 150 MB')
       const dbx = new Dropbox({accessToken: token$.value, fetch});
@@ -289,7 +289,7 @@ const Home = (props) => {
         console.log(res);
         setCurrentFolder(res.entries);
         if(localStorage.getItem('lockbox_favorites')) setFavorites(JSON.parse(localStorage.getItem('lockbox_favorites')));
-        
+
       })
     }
   }, [didMount]);
