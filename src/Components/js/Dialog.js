@@ -11,10 +11,12 @@ const Dialog = (props) => {
     }
 
     function handleNewFolder() {
+        console.log ("handlenewFolder")
         let dbx = new Dropbox({accessToken: token$.value, fetch});
         dbx.filesCreateFolderV2({ path: props.currentPath + "/" + folderName})
         .then(()=> props.exitDialog());
-    }
+    };
+
     return (
         <div className={styles.overlay}>
             <div className={styles.Dialog}>
