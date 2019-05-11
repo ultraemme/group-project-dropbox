@@ -12,6 +12,7 @@ function formatLastModified(date) {
     return moment(date).fromNow();
   }
 }
+
 function formatSize(byte) {
   if (!byte) return;
   if (byte < 1000) {
