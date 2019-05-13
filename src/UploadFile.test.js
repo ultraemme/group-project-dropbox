@@ -29,37 +29,16 @@ it('When clicking on cross close btn, close function should be called', () => {
   expect(closeBtn.length).toBe(1);
   expect(closeClick).toHaveBeenCalled();
 })
-// it('onChange files when selecting file from input', () => {
-//   const wrapper = shallow(<UploadFile />);
-//   const blob = new Blob(['foo'], {type: 'text/plain'});
-//   const fileInput = wrapper.find('.overlay-uploadfile__upload-input').simulate('change', { target: { files: blob } })
-//   wrapper.unmount()
-// })
 it('onSubmit call onUploadSubmit function', () => {
   const uploadFileRequest = jest.fn();
   const mockPreventDefault = jest.fn();
-  const wrapper = shallow(<UploadFile uploadFileRequest={uploadFileRequest}/>);
-  // const blob = new Blob([''], {type: 'text/plain'});
-  // let blob = new Blob([""], { type: 'text/html' });
-  // blob["lastModifiedDate"] = "";
-  // blob["name"] = "filename";
-  // let fakeF = blob;
-
+  const mockChangeFile = jest.fn();
+  const wrapper = shallow(<UploadFile uploadFileRequest={uploadFileRequest} onChange={mockChangeFile}/>);
   const blob = new Blob([""], { type: "text/html" });
-   // blob["lastModifiedDate"] = "";
-   // blob["name"] = "filename";
-   // const file = blob;
-   // const fileList = {
-   //   0: file,
-   // };
-
-
-  // console.log(fileList)
-  const fileInput = wrapper.find('.overlay-uploadfile__upload-input').simulate('change', { target: { files: [blob] } })
-
-  console.log(fileInput);
+  const fileList = [blob];
+  const fileInput = wrapper.find('.overlay-uploadfile__upload-input').simulate('change', { target: { files: fileList } })
   let submitBtn = wrapper.find('.overlay-uploadfile__form').simulate('submit', {
     preventDefault: mockPreventDefault,
   });
-  // expect(uploadFileRequest).toHaveBeenCalled();
+  expect(uploadFileRequest).toHaveBeenCalledWith(fileList);
 })
