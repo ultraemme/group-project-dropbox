@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import styles from './FileType.module.css';
+import styles from '../css/FileType.module.css';
 import { Dropbox } from 'dropbox';
-import { token$ } from '../Store';
+import { token$ } from '../../Store';
 
 const imageRegEx = /\.(gif|jpg|jpeg|tiff|tif|png|bmp)$/i;
 

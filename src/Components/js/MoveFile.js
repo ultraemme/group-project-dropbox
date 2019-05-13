@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import styles from './MoveFile.module.css';
+import styles from '../css/MoveFile.module.css';
 import { Dropbox } from 'dropbox';
-import { token$ } from '../Store';
+import { token$ } from '../../Store';
 
 function formatFromPath(path){
   let pathSplit = path.split('/');
@@ -9,7 +9,6 @@ function formatFromPath(path){
   let rv = pathSplit.join(' > ');
   return rv;
 }
-
 function formatToPath(path){
   if(path === '/'){
     return 'Home';
@@ -22,12 +21,11 @@ function formatToPath(path){
   rv = 'Home ' + rv;
   return rv;
 }
-
-const CopyFile = (props) => {
+const MoveFile = (props) => {
   const [folderList, setFolderList] = useState([]);
   const [selectedPath, setSelectedPath] = useState('');
 
-  function onChangeTest(e){
+  function onChangeFolder(e){
     setSelectedPath(e.target.value);
   }
 
@@ -37,21 +35,21 @@ const CopyFile = (props) => {
       path: '',
       recursive: true,
     })
-      .then((res) => {
-        let newFolderList = res.entries.filter((entry) => {
-          return entry['.tag'] === 'folder';
-        })
-        setFolderList(newFolderList);
+    .then((res) => {
+      let newFolderList = res.entries.filter((entry) => {
+        return entry['.tag'] === 'folder';
       })
+      setFolderList(newFolderList);
+    })
   }, [])
 
   return (
     <div className={styles['overlay-move']}>
       <div className={styles['overlay-move__move-container']}>
-        <i className={`material-icons ${styles['move-container__close-btn']}`} onClick={props.closeCopyFile}>close</i>
+        <i className={`material-icons ${styles['move-container__close-btn']}`} onClick={props.closeMoveFile}>close</i>
         <span className={styles['move-container__title-wrapper']}>
-          <span className={`${styles['move-container__icon']} material-icons`}>file_copy</span>
-          <h4 className={styles['move-container__title']}>Copy File</h4>
+          <span className={`${styles['move-container__icon']} material-icons`}>exit_to_app</span>
+          <h4 className={styles['move-container__title']}>Move File</h4>
         </span>
         <div className={styles['move-container__path-wrapper']}>
           <label className={styles['path-wrapper__path-label']}>From: <span className={styles['path-wrapper__path-text']}>{formatFromPath(`Home${props.selectedFile.path_display}`)}</span></label>
@@ -59,14 +57,14 @@ const CopyFile = (props) => {
         </div>
         <div className={styles['move-form__folder-container']}>
           <div className={styles['move-form__folder-wrapper']}>
-            <input className={styles['move-form__folder-radio']} type='radio' name='folder' value='/' onChange={onChangeTest} />
+            <input className={styles['move-form__folder-radio']} type='radio' name='folder' value='/' onChange={onChangeFolder} />
             <span className={styles['move-form__folder-checkmark']}><i className={`material-icons ${styles['move-form__folder-icon']}`}>folder</i>Home</span>
           </div>
           {
             folderList.map((folder) => {
               return (
                 <div className={styles['move-form__folder-wrapper']} key={folder.id}>
-                  <input className={styles['move-form__folder-radio']} type='radio' name='folder' value={folder.path_lower} onChange={onChangeTest}/>
+                  <input className={styles['move-form__folder-radio']} type='radio' name='folder' value={folder.path_lower} onChange={onChangeFolder}/>
                   <span className={styles['move-form__folder-checkmark']}><i className={`material-icons ${styles['move-form__folder-icon']}`}>folder</i>{folder.name}</span>
                 </div>
               )
@@ -74,12 +72,12 @@ const CopyFile = (props) => {
           }
         </div>
         <span className={styles['move-form__btns-wrapper']}>
-          <button className={styles['move-form__cancel-btn']} onClick={props.closeCopyFile}>Cancel</button>
-          <button className={styles['move-form__submit-btn']} onClick={() => props.copyFileRequest(props.selectedFile, selectedPath)}>Copy File</button>
+          <button className={styles['move-form__cancel-btn']} onClick={props.closeMoveFile}>Cancel</button>
+          <button className={styles['move-form__submit-btn']} onClick={() => props.moveFileRequest(props.selectedFile, selectedPath)}>Move file</button>
         </span>
       </div>
     </div>
   )
 }
 
-export default CopyFile;
+export default MoveFile;

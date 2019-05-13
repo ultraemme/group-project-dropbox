@@ -17,6 +17,7 @@
 }
 .content__table-row{
   transition: ease-in-out 0.1s;
+  height: 68px;
 }
 
 .content__table-row:hover {
@@ -26,6 +27,7 @@
 .content__table-dropdown {
   opacity: 0.5;
   cursor: pointer;
+  user-select: none;
 }
 
 .content__table-dropdown:hover {
@@ -92,6 +94,7 @@
   user-select: none;
   cursor: pointer;
   color: #FFA000;
+  transition: 0.2s ease-in-out;
 }
 .content__fav-table-td{
   font-size: 2rem;

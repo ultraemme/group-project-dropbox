@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import styles from './Content.module.css';
+import styles from '../css/Content.module.css';
 import { Link } from 'react-router-dom';
-import moment from 'moment';
+import moment from 'moment/moment';
 import Dropdown from './Dropdown';
 import FileType from './FileType';
 
@@ -32,14 +32,21 @@ function formatSize(byte) {
 }
 
 const Content = (props) => {
-  console.log(props);
   const [dropdown, setDropdown] = useState({ toggled: false });
 
   function toggleDropdown(e, file) {
     if (dropdown.toggled === true) {
       setDropdown({ toggled: false });
     } else {
-      setDropdown({ toggled: true, posX: e.nativeEvent.clientX, posY: e.nativeEvent.clientY, file });
+      if (e.nativeEvent.clientY + 222 > e.nativeEvent.view.window.innerHeight) {
+        if (e.nativeEvent.clientY > e.nativeEvent.view.window.innerHeight-10) {
+          setDropdown({ toggled: true, posX: e.nativeEvent.clientX-10, posY: e.nativeEvent.clientY-221, file });
+        } else {
+          setDropdown({ toggled: true, posX: e.nativeEvent.clientX-10, posY: e.nativeEvent.clientY-212, file });
+        }
+      } else {
+        setDropdown({ toggled: true, posX: e.nativeEvent.clientX-10, posY: e.nativeEvent.clientY-10, file });
+      }
     }
   }
 
@@ -109,7 +116,7 @@ const Content = (props) => {
           }
         </tbody>
       </table>
-      {dropdown.toggled ? <Dropdown copyFile={props.copyFile} downloadFile={props.downloadFile} deleteFile={props.deleteFile} toggleDropdown={toggleDropdown} posX={dropdown.posX} posY={dropdown.posY} file={dropdown.file} renameFileFunc={props.renameFileFunc} moveFileFunc={props.moveFileFunc} /> : null}
+      {dropdown.toggled ? <Dropdown favorites={props.favorites} removeFavorite={props.removeFavorite} addFavorite={props.addFavorite} copyFile={props.copyFile} downloadFile={props.downloadFile} deleteFile={props.deleteFile} toggleDropdown={toggleDropdown} posX={dropdown.posX} posY={dropdown.posY} file={dropdown.file} renameFileFunc={props.renameFileFunc} moveFileFunc={props.moveFileFunc} /> : null}
     </section>
   )
 }

@@ -11,7 +11,7 @@
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  height: 150px;
+  min-height: 150px;
 }
 .nav__logo-user-wrapper{
   display: flex;
@@ -26,17 +26,20 @@
   justify-content: center;
   height: 100%;
   padding: 0 0 0 10px;
+  align-self: center;
 }
 .nav__username{
   margin: 0;
   font-size: 2rem;
   color: #616161;
+  word-break: break-word;
 }
 .nav__email{
   margin: 0;
   font-size: 1.2rem;
   font-weight: 400;
   color: #9E9E9E;
+  word-break: break-word;
 }
 .nav__logout-btn{
   border: none;
