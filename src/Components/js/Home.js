@@ -373,7 +373,7 @@ const Home = (props) => {
             setCurrentSearchFolder(value);
           })
       }
-    
+
   }, [debouncedQuery])
 
   function searchFile (e) {
@@ -402,24 +402,6 @@ const Home = (props) => {
       {uploadFile ? <UploadFile closeClick={() => setUploadFile(false)} uploadFileRequest={uploadFileRequest}/> : null}
       {newFolder === true ? <Dialog currentPath={currentPath} exitDialog={() => setNewFolder(false)} /> : null}
       {deleteFile ? <DeleteFile file={deleteFileData} deleteFileRequest={deleteFileRequest} closeDialog={() => setDeleteFile(false)}/> : null}
-    {
-      redirectLogout ? <Redirect to="/"/> :
-      <div className={styles.home}>
-        <div className={styles['home__left-container']}>
-          <Navigation newFile={() => setNewFolder(true)} uploadFile={() => setUploadFile(true)} signOut={signOut} user={user}/>
-        </div>
-        <div className={styles['home__right-container']}>
-          <Header searchlist={currentSearchFolder} currentPath={props.location} searchFile={searchFile} value={searchValue}/>
-          <Content favorites={favorites} removeFavorite={removeFavorite} addFavorite={addFavorite} deleteFile={deleteFileDialog} copyFile={copyFileDialog} currentFolder={currentFolder} currentPath={currentPath} downloadFile={downloadFileRequest} renameFileFunc={renameFileDialog} moveFileFunc={moveFileDialog}/>
-        </div>
-      </div>
-    }
-    {moveFile ? <MoveFile closeMoveFile={() => setMoveFile(false)} moveFileRequest={moveFileRequest} selectedFile={moveFileData}/> : null}
-    {copyFile ? <CopyFile closeCopyFile={() => setCopyFile(false)} copyFileRequest={copyFileRequest} selectedFile={copyFileData}/> : null}
-    {renameFile ? <RenameFile fileData={renameFileData} onRenameFileChange={onRenameFileChange} renameFileRequest={renameFileRequest} closeRenameFile={() => setRenameFile(false)}/> : null}
-    {uploadFile ? <UploadFile closeClick={() => setUploadFile(false)} uploadFileRequest={uploadFileRequest}/> : null}
-    {newFolder === true ? <Dialog currentPath={currentPath} exitDialog={() => setNewFolder(false)} /> : null}
-    {deleteFile ? <DeleteFile file={deleteFileData} deleteFileRequest={deleteFileRequest} closeDialog={() => setDeleteFile(false)}/> : null}
     </>
   )
 }
