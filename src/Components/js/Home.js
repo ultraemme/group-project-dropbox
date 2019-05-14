@@ -331,7 +331,7 @@ const Home = (props) => {
         startApiPoll();
       })
     }
-  }, [didMount]);
+  }, [didMount]); // eslint-disable-line
 
   useEffect(() => {
     return () => {
@@ -354,7 +354,7 @@ const Home = (props) => {
         console.error(err.response);
       })
     }
-  }, [currentPath, newFolder]);
+  }, [currentPath, newFolder]); // eslint-disable-line
 
   // SearchFunction
   useEffect(() => {
@@ -378,7 +378,7 @@ const Home = (props) => {
           })
       }
 
-  }, [debouncedQuery])
+  }, [debouncedQuery]); // eslint-disable-line
 
   function searchFile (e) {
     setSearchValue(e.target.value);
