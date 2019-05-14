@@ -93,6 +93,7 @@
   overflow-x: hidden;
   background: #fff;
   background-clip: padding-box;
+  z-index: 999;
   opacity: 1; 
 }
 .header__search-ul{
