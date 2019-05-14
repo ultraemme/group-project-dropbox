@@ -26,6 +26,7 @@ const Home = (props) => {
   const [moveFileData, setmoveFileData] = useState({});
   const [newFolder, setNewFolder] = useState(false);
   const [currentFolder, setCurrentFolder] = useState([]);
+  const [currentSearchFolder,setCurrentSearchFolder] = useState([]);
   const [redirectLogout, setRedirectLogout] = useState(false);
   const [didMount, setDidMount] = useState(false);
   const [user, setUser] = useState({});
@@ -339,23 +340,23 @@ const Home = (props) => {
     if (!searchValue) {
       const dbx = new Dropbox({ accessToken: token$.value, fetch });
       dbx.filesListFolder({ path: currentPath })
-        .then(res => {
-          setCurrentFolder(res.entries);
-        })
-    }
-    else {
-      const dbx = new Dropbox({ accessToken: token$.value, fetch });
-      dbx.filesSearch({
-        path: currentPath,
-        query: searchValue,
+      .then(res => {
+        setCurrentSearchFolder(res.entries);
       })
-        .then(res => {
-          let value = res.matches.map(file => {
-            return file.metadata
-          })
-          setCurrentFolder(value);
+    }else{
+        const dbx = new Dropbox({ accessToken: token$.value, fetch });
+        dbx.filesSearch({
+          path: currentPath,
+          query: searchValue,
         })
-    }
+          .then(res => {
+            let value = res.matches.map(file => {
+              return file.metadata
+            })
+            setCurrentSearchFolder(value);
+          })
+      }
+    
   }, [debouncedQuery])
 
   function searchFile (e) {
@@ -374,7 +375,7 @@ const Home = (props) => {
             </div>
 
             <div className={styles['home__right-container']}>
-              <Header currentPath={props.location} searchFile={searchFile} value={searchValue}/>
+              <Header searchlist={currentSearchFolder} currentPath={props.location} searchFile={searchFile} value={searchValue}/>
               <Content favorites={favorites} removeFavorite={removeFavorite} addFavorite={addFavorite} deleteFile={deleteFileDialog} copyFile={copyFileDialog} currentFolder={currentFolder} currentPath={currentPath} downloadFile={downloadFileRequest} renameFileFunc={renameFileDialog} moveFileFunc={moveFileDialog}/>
             </div>
           </div>
