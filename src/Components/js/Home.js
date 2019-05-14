@@ -127,10 +127,21 @@ const Home = (props) => {
       to_path: `${toPath}/${file.name}`,
     })
     .then((res) => {
-      console.log(res);
+      let movedFile = res.metadata
       const dbx = new Dropbox({accessToken: token$.value, fetch});
       dbx.filesListFolder({path: currentPath})
         .then(res => {
+          let favList = JSON.parse(localStorage.getItem('lockbox_favorites'));
+          let newFavList = favList.map((fav) => {
+            if(movedFile.id === fav.id){
+              return movedFile;
+            }
+            else {
+              return fav;
+            }
+          })
+          setFavorites(newFavList);
+          localStorage.setItem('lockbox_favorites', JSON.stringify(newFavList));
           setCurrentFolder(res.entries);
           setMoveFile(false);
         })
@@ -166,9 +177,21 @@ const Home = (props) => {
       to_path: newPath,
     })
     .then((res) => {
+      let renamedFile = res.metadata
       const dbx = new Dropbox({accessToken: token$.value, fetch});
       dbx.filesListFolder({path: currentPath})
         .then(res => {
+          let favList = JSON.parse(localStorage.getItem('lockbox_favorites'));
+          let newFavList = favList.map((fav) => {
+            if(renamedFile.id === fav.id){
+              return renamedFile;
+            }
+            else {
+              return fav;
+            }
+          })
+          setFavorites(newFavList);
+          localStorage.setItem('lockbox_favorites', JSON.stringify(newFavList));
           setCurrentFolder(res.entries);
           setRenameFile(false);
         })
@@ -260,6 +283,8 @@ const Home = (props) => {
       .then((res) => {
         console.log(res);
         updateToken(res.data.access_token);
+      })
+      .then(() => {
         setDidMount(true);
       })
       .catch(err => {
@@ -293,6 +318,11 @@ const Home = (props) => {
       })
     }
   }, [didMount]);
+  useEffect(() => {
+    return () => {
+      console.log('unmount');
+    }
+  }, [])
 
   useEffect(() => {
     if (didMount) {
