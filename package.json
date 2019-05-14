@@ -5,6 +5,7 @@
   "homepage": "https://ultraemme.github.io/mandatory-advanced-js5/",
   "dependencies": {
     "axios": "^0.18.0",
+    "classnames": "^2.2.6",
     "debounce": "^1.2.0",
     "dropbox": "^4.0.17",
     "gh-pages": "^2.0.1",
