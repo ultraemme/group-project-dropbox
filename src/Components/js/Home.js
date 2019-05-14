@@ -216,10 +216,10 @@ const Home = (props) => {
     })
   }
 
-  function downloadFileRequest(fileName, filePath, tag){
-    if (tag === "folder"){
+  function downloadFileRequest(file){
+    if (file['.tag'] === "folder"){
       const dbx = new Dropbox({accessToken: token$.value, fetch});
-      dbx.filesDownloadZip({path: filePath})
+      dbx.filesDownloadZip({path: file.path_lower})
       .then((res) => {
         let url = URL.createObjectURL(res.fileBlob);
         let downloadButton = document.createElement('a');
@@ -233,7 +233,7 @@ const Home = (props) => {
     }
     else {
       const dbx = new Dropbox({accessToken: token$.value, fetch});
-      dbx.filesDownload({path: filePath})
+      dbx.filesDownload({path: file.path_lower})
       .then((res) => {
         let url = URL.createObjectURL(res.fileBlob);
         let downloadButton = document.createElement('a');
@@ -243,6 +243,7 @@ const Home = (props) => {
       })
       .catch((err) => {
         /* Should remove file from favorites */
+        deleteFavorite(file);
         console.log(err.response);
       })
     }
