@@ -359,15 +359,11 @@ const Home = (props) => {
   // SearchFunction
   useEffect(() => {
     if (!searchValue) {
-      const dbx = new Dropbox({ accessToken: token$.value, fetch });
-      dbx.filesListFolder({ path: currentPath })
-      .then(res => {
-        setCurrentSearchFolder(res.entries);
-      })
+    return;
     }else{
         const dbx = new Dropbox({ accessToken: token$.value, fetch });
         dbx.filesSearch({
-          path: currentPath,
+          path: "",
           query: searchValue,
         })
           .then(res => {
