@@ -3,6 +3,7 @@ import styles from '../css/Header.module.css';
 import { Link } from 'react-router-dom';
 import FileType from './FileType';
 import Classnames from "classnames"
+
 const Header = (props) => {
   const pathArr = props.currentPath.pathname.substr(1).split('/');
   const [focus, setFocus] = useState(false)
@@ -21,10 +22,7 @@ const Header = (props) => {
         <Link to={`/home${str}`} className={styles['header__search-text']} >{file.name}</Link>
      )
     }
-
   }
-
-
    return (
     <header className={styles.header}>
       {<div className={styles.header__container}>

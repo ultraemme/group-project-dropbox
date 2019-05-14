@@ -217,10 +217,10 @@ const Home = (props) => {
     })
   }
 
-  function downloadFileRequest(fileName, filePath, tag){
-    if (tag === "folder"){
+  function downloadFileRequest(file){
+    if (file['.tag'] === "folder"){
       const dbx = new Dropbox({accessToken: token$.value, fetch});
-      dbx.filesDownloadZip({path: filePath})
+      dbx.filesDownloadZip({path: file.path_lower})
       .then((res) => {
         let url = URL.createObjectURL(res.fileBlob);
         let downloadButton = document.createElement('a');
@@ -234,7 +234,7 @@ const Home = (props) => {
     }
     else {
       const dbx = new Dropbox({accessToken: token$.value, fetch});
-      dbx.filesDownload({path: filePath})
+      dbx.filesDownload({path: file.path_lower})
       .then((res) => {
         let url = URL.createObjectURL(res.fileBlob);
         let downloadButton = document.createElement('a');
@@ -244,6 +244,7 @@ const Home = (props) => {
       })
       .catch((err) => {
         /* Should remove file from favorites */
+        deleteFavorite(file);
         console.log(err.response);
       })
     }
@@ -386,6 +387,25 @@ const Home = (props) => {
 
   return (
     <>
+      {
+        redirectLogout ? <Redirect to="/"/> :
+          <div className={styles.home}>
+            <div className={styles['home__left-container']}>
+              <Navigation newFile={() => setNewFolder(true)} uploadFile={() => setUploadFile(true)} signOut={signOut} user={user}/>
+            </div>
+
+            <div className={styles['home__right-container']}>
+              <Header searchlist={currentSearchFolder} currentPath={props.location} searchFile={searchFile} value={searchValue}/>
+              <Content favorites={favorites} removeFavorite={removeFavorite} addFavorite={addFavorite} deleteFile={deleteFileDialog} copyFile={copyFileDialog} currentFolder={currentFolder} currentPath={currentPath} downloadFile={downloadFileRequest} renameFileFunc={renameFileDialog} moveFileFunc={moveFileDialog}/>
+            </div>
+          </div>
+      }
+      {moveFile ? <MoveFile closeMoveFile={() => setMoveFile(false)} moveFileRequest={moveFileRequest} selectedFile={moveFileData}/> : null}
+      {copyFile ? <CopyFile closeCopyFile={() => setCopyFile(false)} copyFileRequest={copyFileRequest} selectedFile={copyFileData}/> : null}
+      {renameFile ? <RenameFile fileData={renameFileData} onRenameFileChange={onRenameFileChange} renameFileRequest={renameFileRequest} closeRenameFile={() => setRenameFile(false)}/> : null}
+      {uploadFile ? <UploadFile closeClick={() => setUploadFile(false)} uploadFileRequest={uploadFileRequest}/> : null}
+      {newFolder === true ? <Dialog currentPath={currentPath} exitDialog={() => setNewFolder(false)} /> : null}
+      {deleteFile ? <DeleteFile file={deleteFileData} deleteFileRequest={deleteFileRequest} closeDialog={() => setDeleteFile(false)}/> : null}
     {
       redirectLogout ? <Redirect to="/"/> :
       <div className={styles.home}>
@@ -393,7 +413,7 @@ const Home = (props) => {
           <Navigation newFile={() => setNewFolder(true)} uploadFile={() => setUploadFile(true)} signOut={signOut} user={user}/>
         </div>
         <div className={styles['home__right-container']}>
-          <Header currentPath={props.location} searchFile={searchFile} value={searchValue}/>
+          <Header searchlist={currentSearchFolder} currentPath={props.location} searchFile={searchFile} value={searchValue}/>
           <Content favorites={favorites} removeFavorite={removeFavorite} addFavorite={addFavorite} deleteFile={deleteFileDialog} copyFile={copyFileDialog} currentFolder={currentFolder} currentPath={currentPath} downloadFile={downloadFileRequest} renameFileFunc={renameFileDialog} moveFileFunc={moveFileDialog}/>
         </div>
       </div>
