@@ -8,7 +8,7 @@ const DeleteFile = (props) => {
         <i className={`material-icons ${styles['delete-container__close-btn']}`} onClick={props.closeDialog}>close</i>
         <span className={styles['delete-container__title-wrapper']}>
           <i className={`material-icons ${styles['title-wrapper__icon']}`}>delete</i>
-          <h4 className={styles['title-wrapper__title']}>Are you sure you wish delete this file?</h4>
+          <h4 className={styles['title-wrapper__title']}>Are you sure you want to delete this file?</h4>
         </span>
         <span className={styles['delete-container__btns-wrapper']}>
           <button className={styles['delete-container__cancel-btn']} onClick={props.closeDialog}>Cancel</button>

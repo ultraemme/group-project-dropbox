@@ -113,7 +113,7 @@ const Content = (props) => {
                   <td className={styles['content__fav-table-td']}>{favorite['.tag'] === 'folder' ? <Link className={styles['content__link']} to={`/home${favorite.path_display}`}>{favorite.name}</Link> : <span className={styles['content__link']} onClick={() => props.downloadFile(favorite.name, favorite.path_display)}>{favorite.name}</span>}</td>
                 </tr>
               )
-            }) : <tr className={styles['content__table-row']}><td className={styles['content__table-td']}>You have no favorites :(</td></tr>
+            }) : <tr className={styles['content__table-row']}><td className={styles['content__table-td']}>No favorites found :(</td></tr>
           }
         </tbody>
       </table>
