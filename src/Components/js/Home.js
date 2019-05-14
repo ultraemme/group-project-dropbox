@@ -362,7 +362,6 @@ const Home = (props) => {
       const dbx = new Dropbox({ accessToken: token$.value, fetch });
       dbx.filesListFolder({ path: currentPath })
       .then(res => {
-<<<<<<< HEAD
         setCurrentSearchFolder(res.entries);
       })
     }else{
@@ -378,8 +377,7 @@ const Home = (props) => {
             setCurrentSearchFolder(value);
           })
       }
-    
-=======
+
         setCurrentFolder(res.entries);
       })
     }
@@ -396,7 +394,6 @@ const Home = (props) => {
         setCurrentFolder(value);
       })
     }
->>>>>>> df6821eb394e82926abbbda28203108abea7c868
   }, [debouncedQuery])
 
   function searchFile (e) {
@@ -406,7 +403,6 @@ const Home = (props) => {
 
   return (
     <>
-<<<<<<< HEAD
       {
         redirectLogout ? <Redirect to="/"/> :
           <div className={styles.home}>
@@ -426,7 +422,6 @@ const Home = (props) => {
       {uploadFile ? <UploadFile closeClick={() => setUploadFile(false)} uploadFileRequest={uploadFileRequest}/> : null}
       {newFolder === true ? <Dialog currentPath={currentPath} exitDialog={() => setNewFolder(false)} /> : null}
       {deleteFile ? <DeleteFile file={deleteFileData} deleteFileRequest={deleteFileRequest} closeDialog={() => setDeleteFile(false)}/> : null}
-=======
     {
       redirectLogout ? <Redirect to="/"/> :
       <div className={styles.home}>
@@ -445,7 +440,6 @@ const Home = (props) => {
     {uploadFile ? <UploadFile closeClick={() => setUploadFile(false)} uploadFileRequest={uploadFileRequest}/> : null}
     {newFolder === true ? <Dialog currentPath={currentPath} exitDialog={() => setNewFolder(false)} /> : null}
     {deleteFile ? <DeleteFile file={deleteFileData} deleteFileRequest={deleteFileRequest} closeDialog={() => setDeleteFile(false)}/> : null}
->>>>>>> df6821eb394e82926abbbda28203108abea7c868
     </>
   )
 }
