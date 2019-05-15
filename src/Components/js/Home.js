@@ -46,7 +46,7 @@ const Home = (props) => {
         setCurrentFolder(res.entries);
         startApiPoll();
       })
-    }, 10000)
+    }, 5000)
   }
   function stopApiPoll(){
     clearTimeout(pollTimeout);

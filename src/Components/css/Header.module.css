@@ -7,6 +7,8 @@
   box-sizing: border-box;
 }
 .header__container{
+  flex-wrap: wrap;
+  align-content: space-evenly;
   height: 100%;
   width: 55%;
   display: flex;
