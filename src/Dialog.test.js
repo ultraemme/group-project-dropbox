@@ -1,20 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Dialog from './Components/js/Dialog';
-import {shallow, configure} from "enzyme";
+import { shallow, configure } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 
-configure({adapter: new Adapter()})
+configure({ adapter: new Adapter() })
 jest.mock('Dropbox');
 
 test('check onChange function', () => {
-  const wrapper = shallow (<Dialog  />);
-  let input = wrapper.find("input").simulate('change',{target:{value:"test"}});
-  console.log (input)
+  const setFolderName = jest.fn()
+  const wrapper = shallow(<Dialog folderName={setFolderName} />);
+  wrapper.find("input").simulate('change', { target: { value: "test" } });
 });
 
 test('button click', () => {
-  const wrapper = shallow (<Dialog />);
+  const wrapper = shallow(<Dialog />);
   wrapper.find('button').at(1).simulate('click');
 });
 
