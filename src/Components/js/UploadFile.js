@@ -14,6 +14,7 @@ const UploadFile = (props) => {
   }
   function onChangeFile(e){
     setFileList(e.target.files);
+    console.log(fileList);
   }
 
   return (
@@ -25,7 +26,11 @@ const UploadFile = (props) => {
           <h4 className={styles['overlay-uploadfile__header-text']}>Upload File</h4>
         </div>
         <form className={styles['overlay-uploadfile__form']} onSubmit={onUploadSubmit}>
-          <input className={styles['overlay-uploadfile__upload-input']} type='file' onChange={onChangeFile} ref={fileInputRef}></input>
+          <span className={styles['overlay-uploadfile__input-wrapper']}>
+            <input className={styles['overlay-uploadfile__upload-input']} type='file' onChange={onChangeFile} ref={fileInputRef}></input>
+            <span className={styles['overlay-uploadfile__fake-input']}><i className={`material-icons ${styles['overlay-uploadfile__fake-input-icon']}`}>arrow_drop_up</i>Choose a file</span>
+            {fileList.length ? <span className={styles['overlay-uploadfile__filename']}>{fileList[0].name}</span> : null}
+          </span>
           <div className={styles['overlay-uploadfile__btn-wrapper']}>
             <button className={styles['overlay-uploadfile__cancel-btn']} onClick={OnCancelClick}>Cancel</button>
             <button className={styles['overlay-uploadfile__submit-btn']} type='submit'>Upload</button>
