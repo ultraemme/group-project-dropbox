@@ -30,7 +30,7 @@ const Home = (props) => {
   const [redirectLogout, setRedirectLogout] = useState(false);
   const [didMount, setDidMount] = useState(false);
   const [user, setUser] = useState({});
-  const [searchValue, setSearchValue] = useState();
+  const [searchValue, setSearchValue] = useState("");
   const [debouncedQuery] = useDebounce(searchValue, 500);
   const [deleteFile, setDeleteFile] = useState(false);
   const [deleteFileData, setDeleteFileData] = useState({});
@@ -38,18 +38,17 @@ const Home = (props) => {
   const [copyFileData, setCopyFileData] = useState({})
   const [favorites, setFavorites] = useState([]);
 
-  function startApiPoll(){
+  function restartApiPoll(){
+    clearTimeout(pollTimeout);
     pollTimeout = setTimeout(() => {
       const dbx = new Dropbox({accessToken: token$.value, fetch});
       dbx.filesListFolder({path: currentPath})
       .then((res) => {
+        console.log("debouce:", debouncedQuery, searchValue, "path:", currentPath, "currentfolder", currentFolder);
         setCurrentFolder(res.entries);
-        startApiPoll();
+        restartApiPoll();
       })
     }, 5000)
-  }
-  function stopApiPoll(){
-    clearTimeout(pollTimeout);
   }
 
   function signOut() {
@@ -328,21 +327,20 @@ const Home = (props) => {
       .then(res => {
         setCurrentFolder(res.entries);
         if(localStorage.getItem('lockbox_favorites')) setFavorites(JSON.parse(localStorage.getItem('lockbox_favorites')));
-        startApiPoll();
+        restartApiPoll();
       })
     }
   }, [didMount]); // eslint-disable-line
 
   useEffect(() => {
     return () => {
-      stopApiPoll();
+      clearTimeout(pollTimeout);
     }
   }, [])
 
   useEffect(() => {
     if (didMount) {
-      stopApiPoll();
-      startApiPoll();
+      restartApiPoll();
       const dbx = new Dropbox({accessToken: token$.value, fetch});
       dbx.filesListFolder({path: currentPath})
       .then(res => {
@@ -358,6 +356,7 @@ const Home = (props) => {
 
   // SearchFunction
   useEffect(() => {
+    console.log("debounce:", debouncedQuery, searchValue);
     if (!searchValue) {
     return;
     }else{
