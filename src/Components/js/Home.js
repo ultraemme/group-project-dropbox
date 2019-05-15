@@ -44,7 +44,6 @@ const Home = (props) => {
       const dbx = new Dropbox({accessToken: token$.value, fetch});
       dbx.filesListFolder({path: currentPath})
       .then((res) => {
-        console.log("debouce:", debouncedQuery, searchValue, "path:", currentPath, "currentfolder", currentFolder);
         setCurrentFolder(res.entries);
         restartApiPoll();
       })
@@ -348,7 +347,6 @@ const Home = (props) => {
       })
       .catch(err => {
         /* Should remove folder from favorites if folder doesn't exist */
-        console.log('hejhej');
         console.error(err.response);
       })
     }
@@ -356,7 +354,6 @@ const Home = (props) => {
 
   // SearchFunction
   useEffect(() => {
-    console.log("debounce:", debouncedQuery, searchValue);
     if (!searchValue) {
     return;
     }else{
