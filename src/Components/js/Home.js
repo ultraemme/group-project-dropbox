@@ -37,6 +37,7 @@ const Home = (props) => {
   const [copyFile, setCopyFile] = useState(false);
   const [copyFileData, setCopyFileData] = useState({})
   const [favorites, setFavorites] = useState([]);
+
   function restartApiPoll(){
     clearTimeout(pollTimeout);
     pollTimeout = setTimeout(() => {
@@ -127,25 +128,29 @@ const Home = (props) => {
 
   function deleteFavorite(file){
     let favList = JSON.parse(localStorage.getItem('lockbox_favorites'));
-    let newFavList = favList.filter((fav) => {
-      return file.id !== fav.id;
-    })
-    setFavorites(newFavList);
-    localStorage.setItem('lockbox_favorites', JSON.stringify(newFavList));
+    if (favList) {
+      let newFavList = favList.filter((fav) => {
+        return file.id !== fav.id;
+      })
+      setFavorites(newFavList);
+      localStorage.setItem('lockbox_favorites', JSON.stringify(newFavList));
+    }
   }
 
   function updateFavorites(file){
     let favList = JSON.parse(localStorage.getItem('lockbox_favorites'));
-    let newFavList = favList.map((fav) => {
-      if(file.id === fav.id){
-        return file;
-      }
-      else {
-        return fav;
-      }
-    })
-    setFavorites(newFavList);
-    localStorage.setItem('lockbox_favorites', JSON.stringify(newFavList));
+    if (favList) {
+      let newFavList = favList.map((fav) => {
+        if(file.id === fav.id){
+          return file;
+        }
+        else {
+          return fav;
+        }
+      })
+      setFavorites(newFavList);
+      localStorage.setItem('lockbox_favorites', JSON.stringify(newFavList));
+    }
   }
 
   function moveFileRequest(file, toPath){
