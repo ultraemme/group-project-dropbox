@@ -82,7 +82,7 @@ const Content = (props) => {
                     <tr className={styles['content__table-row']} key={file.id}>
                       {renderFavorite(file)}
                       <td className={styles['content__table-td']}><FileType file={file} /></td>
-                      <td className={styles['content__table-td']}>{file['.tag'] === 'folder' ? <Link className={styles['content__link']} to={`/home${file.path_display}`}>{file.name}</Link> : <span className={styles['content__link']} onClick={() => props.downloadFile(file.name, file.path_display)}>{file.name}</span>}</td>
+                      <td className={styles['content__table-td']}>{file['.tag'] === 'folder' ? <Link className={styles['content__link']} to={`/home${file.path_display}`}>{file.name}</Link> : <span className={styles['content__link']} onClick={() => props.downloadFile(file)}>{file.name}</span>}</td>
                       <td className={styles['content__table-td']}>{file.server_modified ? formatLastModified(file.server_modified) : null}</td>
                       <td className={styles['content__table-td']}>{formatSize(file.size)}</td>
                       <td className={styles['content__table-td']}><span onClick={(e) => toggleDropdown(e, file)} className={`${styles['content__table-dropdown']} material-icons`}>more_horiz</span></td>
@@ -110,10 +110,10 @@ const Content = (props) => {
                 <tr className={styles['content__table-row']} key={favorite.id}>
                   <td className={styles['content__fav-table-td']}><i className={`${styles['content__star--active']} material-icons`} onClick={() => props.removeFavorite(favorite)}>star</i></td>
                   <td className={styles['content__fav-table-td']}><FileType file={favorite} /></td>
-                  <td className={styles['content__fav-table-td']}>{favorite['.tag'] === 'folder' ? <Link className={styles['content__link']} to={`/home${favorite.path_display}`}>{favorite.name}</Link> : <span className={styles['content__link']} onClick={() => props.downloadFile(favorite.name, favorite.path_display)}>{favorite.name}</span>}</td>
+                  <td className={styles['content__fav-table-td']}>{favorite['.tag'] === 'folder' ? <Link className={styles['content__link']} to={`/home${favorite.path_display}`}>{favorite.name}</Link> : <span className={styles['content__link']} onClick={() => props.downloadFile(favorite)}>{favorite.name}</span>}</td>
                 </tr>
               )
-            }) : <tr className={styles['content__table-row']}><td className={styles['content__table-td']}>You have no favorites :(</td></tr>
+            }) : <tr className={styles['content__table-row']}><td className={styles['content__table-td']}>No favorites found :(</td></tr>
           }
         </tbody>
       </table>
