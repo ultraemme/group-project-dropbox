@@ -8,19 +8,16 @@ const Header = (props) => {
   const pathArr = props.currentPath.pathname.substr(1).split('/');
   const [focus, setFocus] = useState(false)
   let currentDir = "";
+  let list =  props.searchlist;
 
   function handleFile (file){
-    if(file[".tag"] === "folder"){
-      return(
-        <Link to={`/home${file.path_display}`} className={styles['header__search-text']} >{file.name}</Link>
-     )
-
+    if(file[".tag"] === "folder"){  
+      props.history.push(`/home${file.path_display}`);
     }
     else{
       let str = file.path_display.split("/"+ file.name)[0];
-      return(
-        <Link to={`/home${str}`} className={styles['header__search-text']} >{file.name}</Link>
-     )
+      props.history.push(`/home${str}`);
+     
     }
   }
    return (
@@ -49,7 +46,7 @@ const Header = (props) => {
             autoComplete="off"
             value={props.value || ''}
             className={styles['header__search-input']}
-            onFocus={(() => { setFocus(true) })}
+            onFocus={(() => { setFocus(true)})}
             onBlur={(() => { setTimeout(() => setFocus(false), 100) })}
             type="text"
             name="search"
@@ -59,17 +56,19 @@ const Header = (props) => {
           { [styles['header__search-hide']]: !focus })}>
           <ul className={styles['header__search-ul']}>
             {
-              props.searchlist.length ? props.searchlist.map(file => {
+                list.length ? list.map(file => {
                 return (
-                  <li key={file.id} className={styles['header__search-list']}>
+                  <li key={file.id} onClick={()=>{handleFile(file);props.searchFile("")}} className={styles['header__search-list']}>
                     <div className={styles['header__search-div']}>
                       <FileType file={file} />
-                        {handleFile(file)}
+                        <span className={styles['header__search-text']}>{file.name}</span>
                     </div>
                   </li>
                 )
               }) : <li className={styles['header__search-list']}>
-                  <span className={styles['header__search-text']} >No matches...</span>
+                  <div className={styles['header__search-div']}>
+                    <span className={styles['header__search-text']} >No matches...</span>
+                  </div>
                 </li>
             }
           </ul>

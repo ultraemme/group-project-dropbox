@@ -91,31 +91,39 @@
   border-radius: 4px;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  visibility: visible;
   position: absolute;
   height: auto;
   overflow-x: hidden;
   background: #fff;
-  background-clip: padding-box;
   z-index: 999;
   opacity: 1;
 }
 .header__search-ul{
   padding: 0;
 }
+.header__search-list:nth-child(odd){
+  background-color: #fafafa;
+}
 .header__search-list{
   width: 100%;
-  height: 40px;
+  height: 50px;
 }
 .header__search-div{
   display: flex;
   align-items: center;
   cursor: pointer;
+  height: 100%;
   padding-left: 40px;
+}
+.header__search-div:hover{
+  background-color: #f5f5f5;
 }
 .header__search-text{
   font-size: 1.4rem;
   margin-left: 2.0rem;
+  text-decoration: none;
+  color: black;
+  padding: 10px;
 }
 .header__search-hide{
   display:none;

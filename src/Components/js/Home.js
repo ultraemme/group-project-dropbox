@@ -37,7 +37,6 @@ const Home = (props) => {
   const [copyFile, setCopyFile] = useState(false);
   const [copyFileData, setCopyFileData] = useState({})
   const [favorites, setFavorites] = useState([]);
-
   function restartApiPoll(){
     clearTimeout(pollTimeout);
     pollTimeout = setTimeout(() => {
@@ -354,9 +353,7 @@ const Home = (props) => {
 
   // SearchFunction
   useEffect(() => {
-    if (!searchValue) {
-    return;
-    }else{
+   
         const dbx = new Dropbox({ accessToken: token$.value, fetch });
         dbx.filesSearch({
           path: "",
@@ -368,12 +365,15 @@ const Home = (props) => {
             })
             setCurrentSearchFolder(value);
           })
-      }
-
+      
   }, [debouncedQuery]); // eslint-disable-line
 
   function searchFile (e) {
-    setSearchValue(e.target.value);
+    if(e === ""){
+      setSearchValue("")
+    }else{
+      setSearchValue(e.target.value);
+    }
   }
   // SearchFunction ends
 
@@ -387,7 +387,7 @@ const Home = (props) => {
             </div>
 
             <div className={styles['home__right-container']}>
-              <Header searchlist={currentSearchFolder} currentPath={props.location} searchFile={searchFile} value={searchValue}/>
+              <Header history={props.history} searchlist={currentSearchFolder} currentPath={props.location} searchFile={searchFile} value={searchValue}/>
               <Content favorites={favorites} removeFavorite={removeFavorite} addFavorite={addFavorite} deleteFile={deleteFileDialog} copyFile={copyFileDialog} currentFolder={currentFolder} currentPath={currentPath} downloadFile={downloadFileRequest} renameFileFunc={renameFileDialog} moveFileFunc={moveFileDialog}/>
             </div>
           </div>
