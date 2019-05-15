@@ -15,7 +15,7 @@ test('check onChange function', () => {
 
 test('button click', () => {
   const handleNewFolder = jest.fn();
-  const wrapper = shallow (<Dialog handleNewFolder={handleNewFolder()} />);
+  const wrapper = shallow (<Dialog handleNewFolder={handleNewFolder} />);
   wrapper.find('button').at(1).simulate('click');
   expect(handleNewFolder).toHaveBeenCalled()
 });
