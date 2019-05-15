@@ -71,12 +71,14 @@
   outline: none;
   border-radius: 25px;
   border-bottom: 1px groove ;
+  border: 1px solid #E0E0E0;
 }
 .header__search-icon{
   font-size: 2.0rem;
   position: absolute;
   top: 8px;
   left: 6px;
+  color: #9E9E9E;
 }
 .header__search-container{
   right:50px;
@@ -94,7 +96,7 @@
   background: #fff;
   background-clip: padding-box;
   z-index: 999;
-  opacity: 1; 
+  opacity: 1;
 }
 .header__search-ul{
   padding: 0;

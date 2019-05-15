@@ -57,7 +57,7 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  padding: 20px;
+  padding: 20px 0 20px 0;
   box-sizing: border-box;
 }
 .nav__line{
@@ -75,7 +75,7 @@
   padding: 0;
 }
 .nav__ul li{
-  margin: 5px 0 5px 0;
+  width: 100%;
 }
 .nav__btns-container button{
   background: none;
@@ -83,6 +83,8 @@
   font-size: 1.6rem;
   color: #E91E63;
   cursor: pointer;
+  width: 100%;
+  padding: 5px 0 5px 0;
 }
 .nav__btns-container a{
   font-size:1.6rem;
