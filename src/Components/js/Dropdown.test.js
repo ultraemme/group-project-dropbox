@@ -29,7 +29,6 @@ describe('Dropdown component', () => {
     expect(addFavorite).toHaveBeenCalled();
     expect(toggleDropdown).toHaveBeenCalled();
   });
-
 })
 
 

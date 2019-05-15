@@ -69,7 +69,7 @@ const Header = (props) => {
                   </li>
                 )
               }) : <li className={styles['header__search-list']}>
-                  <span className={styles['header__search-text']} >not matchess...</span>
+                  <span className={styles['header__search-text']} >No matches...</span>
                 </li>
             }
           </ul>
