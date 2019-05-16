@@ -53,7 +53,7 @@ const Header = (props) => {
             placeholder="Search..." />
         </form>
         <div  className={Classnames(styles['header__search-container'],
-          { [styles['header__search-hide']]: !focus })}>
+          { [styles['header__search-hide']]: !focus || props.value === "" })}>
           <ul className={styles['header__search-ul']}>
             {
                 list.length ? list.map(file => {
