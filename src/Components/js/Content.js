@@ -64,34 +64,34 @@ const Content = (props) => {
     <section className={styles.content}>
       {
         !props.currentFolder ? <div>Loading...</div> :
-          <table className={styles['content__table']}>
-            <thead>
-              <tr className={styles['content__table-row']}>
-                <th className={styles['content__table-th']}></th>
-                <th className={styles['content__table-th']}></th>
-                <th className={styles['content__table-th']}>File name</th>
-                <th className={styles['content__table-th']}>Last modified</th>
-                <th className={styles['content__table-th']}>Size</th>
-                <th className={styles['content__table-th']}></th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                props.currentFolder.map((file) => {
-                  return (
-                    <tr className={styles['content__table-row']} key={file.id}>
-                      {renderFavorite(file)}
-                      <td className={styles['content__table-td']}><FileType file={file} /></td>
-                      <td className={styles['content__table-td']}>{file['.tag'] === 'folder' ? <Link className={styles['content__link']} to={`/home${file.path_display}`}>{file.name}</Link> : <span className={styles['content__link']} onClick={() => props.downloadFile(file)}>{file.name}</span>}</td>
-                      <td className={styles['content__table-td']}>{file.server_modified ? formatLastModified(file.server_modified) : null}</td>
-                      <td className={styles['content__table-td']}>{formatSize(file.size)}</td>
-                      <td className={styles['content__table-td']}><span onClick={(e) => toggleDropdown(e, file)} className={`${styles['content__table-dropdown']} material-icons`}>more_horiz</span></td>
-                    </tr>
-                  )
-                })
-              }
-            </tbody>
-          </table>
+        <table className={styles['content__table']}>
+          <thead>
+            <tr className={styles['content__table-row']}>
+              <th className={styles['content__table-th']}></th>
+              <th className={styles['content__table-th']}></th>
+              <th className={styles['content__table-th']}>File name</th>
+              <th className={styles['content__table-th']}>Last modified</th>
+              <th className={styles['content__table-th']}>Size</th>
+              <th className={styles['content__table-th']}></th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              props.currentFolder.map((file) => {
+                return (
+                  <tr className={styles['content__table-row']} key={file.id}>
+                    {renderFavorite(file)}
+                    <td className={styles['content__table-td']}><FileType file={file} /></td>
+                    <td className={styles['content__table-td']}>{file['.tag'] === 'folder' ? <Link className={styles['content__link']} to={`/home${file.path_display}`}>{file.name}</Link> : <span className={styles['content__link']} onClick={() => props.downloadFile(file)}>{file.name}</span>}</td>
+                    <td className={styles['content__table-td']}>{file.server_modified ? formatLastModified(file.server_modified) : null}</td>
+                    <td className={styles['content__table-td']}>{formatSize(file.size)}</td>
+                    <td className={styles['content__table-td']}><span onClick={(e) => toggleDropdown(e, file)} className={`${styles['content__table-dropdown']} material-icons`}>more_horiz</span></td>
+                  </tr>
+                )
+              })
+            }
+          </tbody>
+        </table>
       }
       <table className={styles['content__table']}>
         <thead>
@@ -114,12 +114,12 @@ const Content = (props) => {
                 </tr>
               )
             }) : <tr className={styles['content__table-row']}><td className={styles['content__table-td']}>No favorites found :(</td></tr>
-          }
-        </tbody>
-      </table>
-      {dropdown.toggled ? <Dropdown favorites={props.favorites} removeFavorite={props.removeFavorite} addFavorite={props.addFavorite} copyFile={props.copyFile} downloadFile={props.downloadFile} deleteFile={props.deleteFile} toggleDropdown={toggleDropdown} posX={dropdown.posX} posY={dropdown.posY} file={dropdown.file} renameFileFunc={props.renameFileFunc} moveFileFunc={props.moveFileFunc} /> : null}
-    </section>
-  )
-}
+            }
+          </tbody>
+        </table>
+        {dropdown.toggled ? <Dropdown favorites={props.favorites} removeFavorite={props.removeFavorite} addFavorite={props.addFavorite} copyFile={props.copyFile} downloadFile={props.downloadFile} deleteFile={props.deleteFile} toggleDropdown={toggleDropdown} posX={dropdown.posX} posY={dropdown.posY} file={dropdown.file} renameFileFunc={props.renameFileFunc} moveFileFunc={props.moveFileFunc} /> : null}
+      </section>
+    )
+  }
 
-export default Content;
+  export default Content;

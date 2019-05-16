@@ -34,7 +34,6 @@ const FileType = (props) => {
       <i className={`material-icons ${styles['content__table-icon']}`}>insert_drive_file</i>
     )
   }
-
 }
 
 export default FileType

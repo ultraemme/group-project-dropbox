@@ -2,7 +2,7 @@ import React from 'react';
 import styles from '../css/Dropdown.module.css';
 
 const Dropdown = (props) => {
-
+  
   function renderFavoriteAction () {
     for (let favorite of props.favorites) {
       if (favorite.id === props.file.id) {

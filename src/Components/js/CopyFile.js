@@ -37,12 +37,12 @@ const CopyFile = (props) => {
       path: '',
       recursive: true,
     })
-      .then((res) => {
-        let newFolderList = res.entries.filter((entry) => {
-          return entry['.tag'] === 'folder';
-        })
-        setFolderList(newFolderList);
+    .then((res) => {
+      let newFolderList = res.entries.filter((entry) => {
+        return entry['.tag'] === 'folder';
       })
+      setFolderList(newFolderList);
+    })
   }, [])
 
   return (
