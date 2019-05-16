@@ -358,19 +358,19 @@ const Home = (props) => {
 
   // SearchFunction
   useEffect(() => {
-   
-        const dbx = new Dropbox({ accessToken: token$.value, fetch });
-        dbx.filesSearch({
-          path: "",
-          query: searchValue,
+    if(didMount){
+      const dbx = new Dropbox({ accessToken: token$.value, fetch });
+      dbx.filesSearch({
+        path: "",
+        query: searchValue,
+      })
+      .then(res => {
+        let value = res.matches.map(file => {
+          return file.metadata
         })
-          .then(res => {
-            let value = res.matches.map(file => {
-              return file.metadata
-            })
-            setCurrentSearchFolder(value);
-          })
-      
+        setCurrentSearchFolder(value);
+      })
+    }
   }, [debouncedQuery]); // eslint-disable-line
 
   function searchFile (e) {
