@@ -14,7 +14,6 @@ const UploadFile = (props) => {
   }
   function onChangeFile(e){
     setFileList(e.target.files);
-    console.log(fileList);
   }
 
   return (
