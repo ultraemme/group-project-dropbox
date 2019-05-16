@@ -2,6 +2,7 @@ import React from 'react';
 import styles from '../css/RenameFile.module.css';
 
 const RenameFile = (props) => {
+
   function onRenameSubmit(e){
     e.preventDefault();
     props.renameFileRequest();

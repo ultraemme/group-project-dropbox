@@ -3,7 +3,6 @@ import styles from '../css/Navigation.module.css';
 import logo from '../../lockbox_logo.svg';
 
 const Navigation = (props) => {
-
   return (
     <nav className={styles.nav}>
       <div className={styles['nav__head']}>

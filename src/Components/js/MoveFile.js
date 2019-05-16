@@ -9,6 +9,7 @@ function formatFromPath(path){
   let rv = pathSplit.join(' > ');
   return rv;
 }
+
 function formatToPath(path){
   if(path === '/'){
     return 'Home';
@@ -21,6 +22,7 @@ function formatToPath(path){
   rv = 'Home ' + rv;
   return rv;
 }
+
 const MoveFile = (props) => {
   const [folderList, setFolderList] = useState([]);
   const [selectedPath, setSelectedPath] = useState('');

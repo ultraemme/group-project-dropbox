@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import styles from '../css/UploadFile.module.css';
+
 const UploadFile = (props) => {
   const [fileList, setFileList] = useState({})
   const fileInputRef = useRef(null)
@@ -8,13 +9,14 @@ const UploadFile = (props) => {
     e.preventDefault(e);
     props.closeClick();
   }
+
   function onUploadSubmit(e){
     e.preventDefault();
     props.uploadFileRequest(fileList);
   }
+
   function onChangeFile(e){
     setFileList(e.target.files);
-    console.log(fileList);
   }
 
   return (
